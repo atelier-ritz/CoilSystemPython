@@ -1,13 +1,18 @@
 from ctypes import cdll
 s826dll = cdll.LoadLibrary("./lib826_64.so")
 
-
+#===========================================
+#
+#===========================================
 class S826(object):
     def __init__(self):
         self._flag = 0
         errcode = self.s826_init()
         if errcode != 1:
+            print('Cannot detect s826 board.')
             self.s826_close()
+        else:
+            self.setXYZ(0,0,0)
 
     def s826_init(self):
         errCode = s826dll.S826_SystemOpen()
