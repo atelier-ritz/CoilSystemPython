@@ -1,6 +1,3 @@
-from ctypes import cdll
-s826dll = cdll.LoadLibrary("./lib826_64.so")
-
 # assign pin # to the coil
 PIN_X1 = 0
 PIN_X2 = 3
@@ -8,6 +5,7 @@ PIN_Y1 = 1
 PIN_Y2 = 4
 PIN_Z1 = 2
 PIN_Z2 = 5
+
 
 class FieldManager(object):
     def __init__(self,dac):

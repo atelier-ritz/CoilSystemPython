@@ -9,10 +9,8 @@ class S826(object):
         self._flag = 0
         errcode = self.s826_init()
         if errcode != 1:
-            print('Cannot detect s826 board.')
+            print('Cannot detect s826 board. Error code: {}'.format(errcode))
             self.s826_close()
-        else:
-            self.setXYZ(0,0,0)
 
     def s826_init(self):
         errCode = s826dll.S826_SystemOpen()
@@ -35,3 +33,5 @@ class S826(object):
         setpoint = int((outputV-lowerV)/rangeV*0xffff)
         s826dll.S826_DacRangeWrite(BOARD,chan,rangeCode,0)
         s826dll.S826_DacDataWrite(BOARD,chan,setpoint,0)
+
+
