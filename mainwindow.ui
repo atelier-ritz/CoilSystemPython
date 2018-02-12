@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>373</width>
-    <height>391</height>
+    <width>365</width>
+    <height>576</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>361</width>
+      <width>351</width>
       <height>181</height>
      </rect>
     </property>
@@ -165,8 +165,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>78</width>
-        <height>22</height>
+        <width>141</width>
+        <height>29</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -198,15 +198,74 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>180</y>
-      <width>351</width>
-      <height>171</height>
+      <x>10</x>
+      <y>190</y>
+      <width>341</width>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
      <string>Vision</string>
     </property>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>321</width>
+       <height>75</height>
+      </rect>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Please type the signal flow of the filters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="chb_startPauseCapture">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>181</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start/Pause Capture</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>201</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Subthread</string>
+    </property>
+    <widget class="QCheckBox" name="chb_startStopSubthread">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>181</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start/Stop subthread</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -214,8 +273,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>373</width>
-     <height>21</height>
+     <width>365</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

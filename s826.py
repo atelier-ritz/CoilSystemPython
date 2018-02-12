@@ -1,9 +1,6 @@
 from ctypes import cdll
 s826dll = cdll.LoadLibrary("./lib826_64.so")
 
-#===========================================
-#
-#===========================================
 class S826(object):
     def __init__(self):
         self._flag = 0
@@ -33,5 +30,3 @@ class S826(object):
         setpoint = int((outputV-lowerV)/rangeV*0xffff)
         s826dll.S826_DacRangeWrite(BOARD,chan,rangeCode,0)
         s826dll.S826_DacDataWrite(BOARD,chan,setpoint,0)
-
-
