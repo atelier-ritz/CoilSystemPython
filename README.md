@@ -26,9 +26,9 @@ https://github.com/jordens/pydc1394
 
 ## GUI Designer
 
-qt-designer
+qt-designer is used.
 
-duso apt-get install qt4-designer
+sudo apt-get install qt4-designer
 
 ## USB camera or Firewire Camera
 
