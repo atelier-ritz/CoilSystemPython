@@ -2,7 +2,13 @@
 
 A Python3-based program for the coil system
 
-# Dependencies
+## Usage
+
+open terminal and cd to the target directory
+
+python3 main.py
+
+## Dependencies
 
 1. opencv
 
@@ -18,12 +24,12 @@ pip3 install pyqt5
 
 https://github.com/jordens/pydc1394
 
-# GUI Designer
+## GUI Designer
 
 qt-designer
 
 duso apt-get install qt4-designer
 
-# USB camera or Firewire Camera
+## USB camera or Firewire Camera
 
 Can specify the camera in vision.py
