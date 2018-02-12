@@ -11,7 +11,7 @@ from subThread import SubThread
 qtCreatorFile = "mainwindow.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 #=========================================================
-# Creating an instance of class "FieldManager"
+# Creating instances of fieldManager and Camera
 #=========================================================
 field = FieldManager(S826())
 vision = Vision()
@@ -47,7 +47,7 @@ class GUI(QMainWindow,Ui_MainWindow):
         vision.updateFrame()
 
     #=====================================================
-    # Connect GUI elements to functions
+    # Connect buttons etc. of the GUI to callback functions
     #=====================================================
     def connectSignals(self):
         # General Control Tab
@@ -73,7 +73,7 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.hsld_z.valueChanged.connect(lambda value: self.dsb_z.setValue(float(value/100)))
 
     #=====================================================
-    # Thread Test
+    # Thread Example
     #=====================================================
     def setupSubThread(self,field,vision):
         self.thrd = SubThread(field,vision)
