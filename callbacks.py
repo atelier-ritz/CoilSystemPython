@@ -37,7 +37,6 @@ class GUI(QMainWindow,Ui_MainWindow):
 
     #=====================================================
     # QTimer handles updates of the GUI, run at 60Hz
-    # The update
     #=====================================================
     def setupTimer(self):
         self.timer = QTimer()
