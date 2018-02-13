@@ -1,5 +1,6 @@
 from ctypes import cdll
 s826dll = cdll.LoadLibrary("./lib826_64.so")
+BOARD = 0
 
 class S826(object):
     def __init__(self):
@@ -11,10 +12,16 @@ class S826(object):
 
     def s826_init(self):
         errCode = s826dll.S826_SystemOpen()
+        self.s826_initRange()
         return errCode
 
     def s826_close(self):
         s826dll.S826_SystemClose()
+
+    def s826_initRange(self):
+        for i in range(6):
+            # BOARD, chan, rangeCode, output V
+            s826dll.S826_DacRangeWrite(BOARD,i,2,0)
 
     # ======================================================================
     # Set 1 AO channel.
@@ -26,7 +33,5 @@ class S826(object):
     def s826_aoPin(self,chan,rangeCode,outputV):
         lowerV = -5
         rangeV = 10
-        BOARD = 0
         setpoint = int((outputV-lowerV)/rangeV*0xffff)
-        s826dll.S826_DacRangeWrite(BOARD,chan,rangeCode,0)
         s826dll.S826_DacDataWrite(BOARD,chan,setpoint,0)

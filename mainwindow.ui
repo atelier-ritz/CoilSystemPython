@@ -224,21 +224,37 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Please type the signal flow of the filters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="chb_startPauseCapture">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>110</y>
-       <width>181</width>
-       <height>22</height>
+       <width>321</width>
+       <height>24</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Start/Pause Capture</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="chb_startPauseCapture">
+        <property name="text">
+         <string>Start/Pause Capture</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chb_bypassFilters">
+        <property name="text">
+         <string>Bypass Filters</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
@@ -266,6 +282,25 @@ p, li { white-space: pre-wrap; }
       <string>Start/Stop subthread</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QDoubleSpinBox" name="dsb_freq">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>370</y>
+      <width>71</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <double>0.000000000000000</double>
+    </property>
+    <property name="maximum">
+     <double>60.000000000000000</double>
+    </property>
+    <property name="singleStep">
+     <double>1.000000000000000</double>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

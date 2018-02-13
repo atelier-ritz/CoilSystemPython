@@ -24,14 +24,15 @@ class GUI(QMainWindow,Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
         self.setupTimer()
+        self.setupSubThread(field,vision)
         self.connectSignals()
         self.linkWidgets()
-        self.setupSubThread(field,vision)
 
     #=====================================================
     # override the behavior when terminating the window
     #=====================================================
     def closeEvent(self,event):
+        self.thrd.stop()
         self.clearField()
         event.accept()
 
@@ -59,6 +60,7 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.chb_startPauseCapture.toggled.connect(self.on_chb_startPauseCapture)
         # Subthread Tab
         self.chb_startStopSubthread.toggled.connect(self.on_chb_startStopSubthread)
+        self.dsb_freq.valueChanged.connect(self.thrd.setFreq)
 
     #=====================================================
     # Link GUI elements
