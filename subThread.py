@@ -45,10 +45,9 @@ class SubThread(QThread):
         while True:
             t = time.time() - startTime # elapsed time (sec)
             theta = 2 * pi * self.freq * t
-            fieldX = 2 * cos(theta)
-            fieldY = 2 * sin(theta)
+            fieldX = 14 * cos(theta)
+            fieldY = 14 * sin(theta)
             self.field.setX(fieldX)
             self.field.setY(fieldY)
             if self.stopped:
-                field.setXYZ(0,0,0)
                 return

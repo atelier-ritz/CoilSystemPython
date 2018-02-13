@@ -92,6 +92,7 @@ class GUI(QMainWindow,Ui_MainWindow):
     @pyqtSlot()
     def finishSubThreadProcess(self):
         print('Subthread is terminated.')
+        self.clearField()
         # disable some buttons etc.
 
     #=====================================================
