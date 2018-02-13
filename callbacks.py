@@ -1,5 +1,5 @@
 ﻿from PyQt5 import uic
-from PyQt5.QtCore import QFile, QRegExp, QTimer, Qt
+from PyQt5.QtCore import QFile, QRegExp, QTimer, Qt, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMenu, QMessageBox
 from fieldManager import FieldManager
 from vision import Vision
@@ -81,11 +81,13 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.thrd.finished.connect(self.finishSubThreadProcess)
 
     # updating GUI according to the status of the subthread
+    @pyqtSlot(str)
     def updateSubThreadStatus(self, receivedStr):
         print('Received message from subthread: ',receivedStr)
         # show something on GUI
 
     # run when the subthread is termianted
+    @pyqtSlot()
     def finishSubThreadProcess(self):
         print('Subthread is terminated.')
         # disable some buttons etc.

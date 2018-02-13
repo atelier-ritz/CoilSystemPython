@@ -1,4 +1,5 @@
-import os, sys, time
+import time
+from math import pi, sin, cos
 from PyQt5.QtCore import pyqtSignal, QMutexLocker, QMutex, QThread
 
 
@@ -10,6 +11,7 @@ class SubThread(QThread):
         self.mutex = QMutex()
         self.field = field
         self.vision = vision
+        self.freq = 0
 
     def setup(self):
         self.stopped = False
@@ -19,6 +21,12 @@ class SubThread(QThread):
             self.stopped = True
 
     def run(self):
+        # self.taskTest()
+        self.taskSinFieldXY()
+        self.stop()
+        self.finished.emit()
+
+    def taskTest(self):
         counter = 1
         while True:
             time.sleep(1)
@@ -28,5 +36,18 @@ class SubThread(QThread):
                 self.statusSignal.emit(sendStr)
             if self.stopped:
                 return
-        self.stop()
-        self.finished.emit()
+
+    def setFreq(self,Hz):
+        self.freq = Hz
+
+    def taskSinFieldXY(self):
+        startTime = time.time()
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            theta = 2 * pi * self.freq * t
+            fieldX = 14 * cos(theta)
+            fieldY = 14 * sin(theta)
+            self.field.setX(fieldX)
+            self.field.setY(fieldY)
+            if self.stopped:
+                return
