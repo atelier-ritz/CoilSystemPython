@@ -19,7 +19,7 @@ class S826(object):
         s826dll.S826_SystemClose()
 
     def s826_initRange(self):
-        for i in range(6):
+        for i in range(8):
             # BOARD, chan, rangeCode, output V
             s826dll.S826_DacRangeWrite(BOARD,i,2,0)
 
