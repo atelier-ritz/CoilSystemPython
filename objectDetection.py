@@ -2,7 +2,7 @@ import cv2
 import filterlib
 
 #========================================
-# ALWAYS usd greyscale image as input
+# ALWAYS use greyscale image as input
 # e.g. grey() -> canny() -> biggestSquareContour()
 #========================================
 def biggestSquareContour(image,sampleNum,epsilon):
