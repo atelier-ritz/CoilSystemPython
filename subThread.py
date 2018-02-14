@@ -5,12 +5,14 @@ from PyQt5.QtCore import pyqtSignal, QMutexLocker, QMutex, QThread
 
 class SubThread(QThread):
     statusSignal = pyqtSignal(str)
+
     def __init__(self,field,vision,parent=None,):
         super(SubThread, self).__init__(parent)
         self.stopped = False
         self.mutex = QMutex()
         self.field = field
         self.vision = vision
+
         self.freq = 0
 
     def setup(self):
@@ -26,6 +28,10 @@ class SubThread(QThread):
         self.stop()
         self.finished.emit()
 
+    #====================================
+    # Task Example
+    # print elapsed time every 2 seconds and emit a signal to GUI
+    #====================================
     def taskTest(self):
         counter = 1
         while True:
@@ -36,7 +42,10 @@ class SubThread(QThread):
                 self.statusSignal.emit(sendStr)
             if self.stopped:
                 return
-
+    #====================================
+    # Task Example 2
+    # Apply a rotational magnetic field in X-Y plane
+    #====================================
     def setFreq(self,Hz):
         self.freq = Hz
 

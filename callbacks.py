@@ -5,6 +5,7 @@ from fieldManager import FieldManager
 from vision import Vision
 from s826 import S826
 from subThread import SubThread
+import syntax
 #=========================================================
 # UI Config
 #=========================================================
@@ -25,11 +26,14 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.setupUi(self)
         self.setupTimer()
         self.setupSubThread(field,vision)
+        self.setupFileMenu()
         self.connectSignals()
         self.linkWidgets()
 
+        self.currentFilePath = '' # directory to store the vision editor
+
     #=====================================================
-    # override the behavior when terminating the window
+    # [override] terminate the subThread and clear currents when closing the window
     #=====================================================
     def closeEvent(self,event):
         self.thrd.stop()
@@ -42,7 +46,7 @@ class GUI(QMainWindow,Ui_MainWindow):
     def setupTimer(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
-        self.timer.start(15) # msec
+        self.timer.start(5) # msec
 
     def update(self):
         vision.updateFrame()
@@ -57,7 +61,12 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.dsb_z.valueChanged.connect(self.setFieldXYZ)
         self.btn_clearCurrent.clicked.connect(self.clearField)
         # Vision Tab
+        self.highlighter = syntax.Highlighter(self.editor_vision.document())
+        self.chb_bypassFilters.toggled.connect(self.on_chb_bypassFilters)
         self.chb_startPauseCapture.toggled.connect(self.on_chb_startPauseCapture)
+        self.btn_refreshFilterRouting.clicked.connect(self.on_btn_refreshFilterRouting)
+        self.chb_objectDetection.toggled.connect(self.on_chb_objectDetection)
+
         # Subthread Tab
         self.chb_startStopSubthread.toggled.connect(self.on_chb_startStopSubthread)
         self.dsb_freq.valueChanged.connect(self.thrd.setFreq)
@@ -96,8 +105,37 @@ class GUI(QMainWindow,Ui_MainWindow):
         # disable some buttons etc.
 
     #=====================================================
+    # File Menu
+    #=====================================================
+    def setupFileMenu(self):
+        fileMenu = QMenu("&File", self)
+        self.menuBar().addMenu(fileMenu)
+        fileMenu.addAction("&New Editor", self.newFile, "Ctrl+N")
+        fileMenu.addAction("&Open Editor...", self.openFile, "Ctrl+O")
+        fileMenu.addAction("&Save Editor", self.saveFile, "Ctrl+S")
+        fileMenu.addAction("E&xit", QApplication.instance().quit, "Ctrl+Q")
+
+    def newFile(self):
+        self.editor_vision.clear()
+        self.currentFilePath = ''
+
+    def openFile(self, path=None):
+        path, _ = QFileDialog.getOpenFileName(self, "Open File", '',
+                "txt Files (*.txt)")
+
+    def saveFile(self):
+        if self.currentFilePath == '':
+            self.currentFilePath, _ = QFileDialog.getSaveFileName(self, "Save file", '',
+                    "txt Files (*.txt)")
+        path = self.currentFilePath
+        saveFile = open(path, "w")
+        text = str(self.editor_vision.toPlainText())
+        saveFile.write(text)
+        saveFile.close()
+    #=====================================================
     # Callback Functions
     #=====================================================
+    # General control tab
     def setFieldXYZ(self):
         field.setX(self.dsb_x.value())
         field.setY(self.dsb_y.value())
@@ -109,9 +147,20 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.dsb_z.setValue(0)
         field.setXYZ(0,0,0)
 
-    def on_chb_startPauseCapture(self,state):
-        vision.setState(state)
+    # vision tab
+    def on_chb_bypassFilters(self,state):
+        vision.setStateFiltersBypass(state)
 
+    def on_chb_startPauseCapture(self,state):
+        vision.setStateUpdate(state)
+
+    def on_btn_refreshFilterRouting(self):
+        vision.createFilterRouting(self.editor_vision.toPlainText().splitlines())
+
+    def on_chb_objectDetection(self,state):
+        vision.setStateObjectDetection(state)
+
+    # subthread
     def on_chb_startStopSubthread(self,state):
         if state:
             self.thrd.setup()
