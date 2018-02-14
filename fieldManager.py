@@ -1,8 +1,8 @@
 # assign pin # to the coil
 PIN_X1 = [0, 5.003] # pin #, factor
 PIN_X2 = [3, 4.879]
-PIN_Y1 = [1, 5.024]
-PIN_Y2 = [4, 5.143]
+PIN_Y1 = [4, 5.143]
+PIN_Y2 = [1, 5.024]
 PIN_Z1 = [2, 5.024]
 PIN_Z2 = [5, 4.433]
 
@@ -37,19 +37,19 @@ class FieldManager(object):
         if mT > 0:
             self.dac.s826_aoPin(PIN_X1[0],2,  mT / PIN_X1[1])
         else:
-            self.dac.s826_aoPin(PIN_X2[0],2, -mT / PIN_X2[1])
+            self.dac.s826_aoPin(PIN_X2[0],2, mT / PIN_X2[1])
         self.x = 0
 
     def setYGradient(self,mT):
         if mT > 0:
             self.dac.s826_aoPin(PIN_Y1[0],2,  mT / PIN_Y1[1])
         else:
-            self.dac.s826_aoPin(PIN_Y2[0],2, -mT / PIN_Y2[1])
+            self.dac.s826_aoPin(PIN_Y2[0],2, mT / PIN_Y2[1])
         self.y = 0
 
     def setZGradient(self,mT):
         if mT > 0:
             self.dac.s826_aoPin(PIN_Z1[0],2,  mT / PIN_Z1[1])
         else:
-            self.dac.s826_aoPin(PIN_Z2[0],2, -mT / PIN_Z2[1])
+            self.dac.s826_aoPin(PIN_Z2[0],2, mT / PIN_Z2[1])
         self.z = 0
