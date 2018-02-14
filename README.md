@@ -11,6 +11,8 @@ python3 main.py
 ## Program Structure
 	
 ```
+main.py
+
 callbacks.py
 │
 │   
@@ -22,7 +24,8 @@ callbacks.py
 └───visoin.py
 │       │   filterlib.py
 │       │   objectDetection.py
-│  
+│
+│
 └───subthread.py
 
 ```
