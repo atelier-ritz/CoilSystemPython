@@ -11,7 +11,7 @@ python3 main.py
 ## Program Structure
 	
 ```
-main.py
+callbacks.py
 │
 │   
 |
