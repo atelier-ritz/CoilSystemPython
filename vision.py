@@ -25,7 +25,7 @@ class Vision(object):
         #=================================================
         # If using firewire camera
         #=================================================
-        self.cam = Camera(guid=2672909587849792)
+        # self.cam = Camera(guid=2672909587849792)
         self.cam = Camera(guid=2672909588927744)
         print("====================================================")
         print("Vendor:", self.cam.vendor)
