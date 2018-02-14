@@ -60,6 +60,9 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.dsb_y.valueChanged.connect(self.setFieldXYZ)
         self.dsb_z.valueChanged.connect(self.setFieldXYZ)
         self.btn_clearCurrent.clicked.connect(self.clearField)
+        self.dsb_xGradient.valueChanged.connect(self.setFieldXYZGradient)
+        self.dsb_yGradient.valueChanged.connect(self.setFieldXYZGradient)
+        self.dsb_zGradient.valueChanged.connect(self.setFieldXYZGradient)
         # Vision Tab
         self.highlighter = syntax.Highlighter(self.editor_vision.document())
         self.chb_bypassFilters.toggled.connect(self.on_chb_bypassFilters)
@@ -83,6 +86,12 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.hsld_y.valueChanged.connect(lambda value: self.dsb_y.setValue(float(value/100)))
         self.hsld_z.valueChanged.connect(lambda value: self.dsb_z.setValue(float(value/100)))
 
+        self.dsb_xGradient.valueChanged.connect(lambda value: self.hsld_xGradient.setValue(int(value*100)))
+        self.dsb_yGradient.valueChanged.connect(lambda value: self.hsld_yGradient.setValue(int(value*100)))
+        self.dsb_zGradient.valueChanged.connect(lambda value: self.hsld_zGradient.setValue(int(value*100)))
+        self.hsld_xGradient.valueChanged.connect(lambda value: self.dsb_xGradient.setValue(float(value/100)))
+        self.hsld_yGradient.valueChanged.connect(lambda value: self.dsb_yGradient.setValue(float(value/100)))
+        self.hsld_zGradient.valueChanged.connect(lambda value: self.dsb_zGradient.setValue(float(value/100)))
     #=====================================================
     # Thread Example
     #=====================================================
@@ -145,7 +154,15 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.dsb_x.setValue(0)
         self.dsb_y.setValue(0)
         self.dsb_z.setValue(0)
+        self.dsb_xGradient.setValue(0)
+        self.dsb_yGradient.setValue(0)
+        self.dsb_zGradient.setValue(0)
         field.setXYZ(0,0,0)
+
+    def setFieldXYZGradient(self):
+        field.setXGradient(self.dsb_xGradient.value())
+        field.setYGradient(self.dsb_yGradient.value())
+        field.setZGradient(self.dsb_zGradient.value())
 
     # vision tab
     def on_chb_bypassFilters(self,state):

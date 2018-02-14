@@ -15,36 +15,52 @@ class Vision(object):
         #=================================================
         # If using a USB webcamera
         #=================================================
-        self.cap = cv2.VideoCapture(0)
-        if not self.cap.isOpened():
-            print('Camera is not detected. End program.')
-            self.cap.release()
-            sys.exit()
-        cv2.namedWindow("Realtime Capture",16) # cv2.GUI_NORMAL = 16
+        # self.cap = cv2.VideoCapture(0)
+        # if not self.cap.isOpened():
+        #     print('Camera is not detected. End program.')
+        #     self.cap.release()
+        #     sys.exit()
+        # cv2.namedWindow("Realtime Capture",16) # cv2.GUI_NORMAL = 16
 
         #=================================================
         # If using firewire camera
         #=================================================
-        # self.cam = Camera(guid=2672909587849792)
-        # self.cam = Camera(guid=2672909588927744)
-        # print("====================================================")
-        # print("Vendor:", self.cam.vendor)
-        # print("Model:", self.cam.model)
-        # print("GUID:", self.cam.guid)
-        # print("Mode:", self.cam.mode)
-        # print("Framerate: ", self.cam.rate)
-        # print("Available modes", [mode.name for mode in self.cam.modes])
-        # print("====================================================")
-        # self.cam.start_capture()
-        # self.cam.start_video()
-        # cv2.namedWindow("Realtime Capture",16) # cv2.GUI_NORMAL = 16
+        self.cam = Camera(guid=2672909587849792)
+        self.cam = Camera(guid=2672909588927744)
+        print("====================================================")
+        print("Vendor:", self.cam.vendor)
+        print("Model:", self.cam.model)
+        print("GUID:", self.cam.guid)
+        print("Mode:", self.cam.mode)
+        print("Framerate: ", self.cam.rate)
+        print("Available modes", [mode.name for mode in self.cam.modes])
+        print("====================================================")
+        self.cam.start_capture()
+        self.cam.start_video()
+        cv2.namedWindow("Realtime Capture",16) # cv2.GUI_NORMAL = 16
 
     def updateFrame(self):
         #=================================================
         # If using a USB webcamera
         #=================================================
+        # if self._isUpdating:
+        #     _, frameOriginal = self.cap.read()
+        #     if not self._isFilterBypassed and not self.filterRouting == []:
+        #         frameFiltered = self.processFilters(frameOriginal.copy())
+        #     else:
+        #         frameFiltered = frameOriginal
+        #     if self._isObjectDetection:
+        #         frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
+        #     else:
+        #         frameProcessed = frameFiltered
+        #     cv2.imshow('Realtime Capture',frameProcessed)
+        #     self.frame = frameProcessed
+
+        #=================================================
+        # If using firewire camera
+        #=================================================
         if self._isUpdating:
-            _, frameOriginal = self.cap.read()
+            frameOriginal = self.cam.dequeue()
             if not self._isFilterBypassed and not self.filterRouting == []:
                 frameFiltered = self.processFilters(frameOriginal.copy())
             else:
@@ -55,14 +71,7 @@ class Vision(object):
                 frameProcessed = frameFiltered
             cv2.imshow('Realtime Capture',frameProcessed)
             self.frame = frameProcessed
-
-        #=================================================
-        # If using firewire camera
-        #=================================================
-        # if self._isUpdating:
-        #     frame = self.cam.dequeue()
-        #     cv2.imshow('Realtime Capture',frame)
-        #     frame.enqueue()
+            frameOriginal.enqueue()
 
 
     #==============================================================================================
@@ -108,6 +117,7 @@ class Vision(object):
     #==============================================================================================
     def processObjectDetection(self,imageFiltered,imageOriginal):
         screenCnt = objectDetection.biggestSquareContour(imageFiltered,sampleNum=5,epsilon=20)
+        imageOriginal = cv2.cvtColor(imageOriginal, cv2.COLOR_GRAY2RGB)
         if not screenCnt == []:
             cv2.drawContours(imageOriginal, [screenCnt], -1, (0, 255, 0), 3)
         return imageOriginal

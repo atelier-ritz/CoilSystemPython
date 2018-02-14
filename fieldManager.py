@@ -14,21 +14,36 @@ class FieldManager(object):
         self.dac = dac
 
     def setX(self,mT):
-        self.dac.s826_aoPin(PIN_X1[0],2,mT/PIN_X1[1])
-        self.dac.s826_aoPin(PIN_X2[0],2,mT/PIN_X2[1])
+        self.dac.s826_aoPin(PIN_X1[0],2, mT / PIN_X1[1])
+        self.dac.s826_aoPin(PIN_X2[0],2, mT / PIN_X2[1])
         self.x = mT
 
     def setY(self,mT):
-        self.dac.s826_aoPin(PIN_Y1[0],2,mT/PIN_Y1[1])
-        self.dac.s826_aoPin(PIN_Y2[0],2,mT/PIN_Y2[1])
+        self.dac.s826_aoPin(PIN_Y1[0],2, mT / PIN_Y1[1])
+        self.dac.s826_aoPin(PIN_Y2[0],2, mT / PIN_Y2[1])
         self.y = mT
 
     def setZ(self,mT):
-        self.dac.s826_aoPin(PIN_Z1[0],2,mT/PIN_Z1[1])
-        self.dac.s826_aoPin(PIN_Z2[0],2,mT/PIN_Z2[1])
+        self.dac.s826_aoPin(PIN_Z1[0],2, mT / PIN_Z1[1])
+        self.dac.s826_aoPin(PIN_Z2[0],2, mT / PIN_Z2[1])
         self.z = mT
 
     def setXYZ(self,x_mT,y_mT,z_mT):
         self.setX(x_mT)
         self.setY(y_mT)
         self.setZ(z_mT)
+
+    def setXGradient(self,mT):
+        self.dac.s826_aoPin(PIN_X1[0],2,  mT / PIN_X1[1])
+        self.dac.s826_aoPin(PIN_X2[0],2, -mT / PIN_X2[1])
+        self.x = 0
+
+    def setYGradient(self,mT):
+        self.dac.s826_aoPin(PIN_Y1[0],2,  mT / PIN_Y1[1])
+        self.dac.s826_aoPin(PIN_Y2[0],2, -mT / PIN_Y2[1])
+        self.y = 0
+
+    def setZGradient(self,mT):
+        self.dac.s826_aoPin(PIN_Z1[0],2,  mT / PIN_Z1[1])
+        self.dac.s826_aoPin(PIN_Z2[0],2, -mT / PIN_Z2[1])
+        self.z = 0

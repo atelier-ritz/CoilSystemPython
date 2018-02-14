@@ -17,3 +17,9 @@ def biggestSquareContour(image,sampleNum,epsilon):
             screenCnt = approx
             break
     return screenCnt
+
+# def minAreaBoundingRect(self,cnt):
+#     rect = cv2.minAreaRect(cnt)
+#     2 box = cv2.boxPoints(rect)
+#     3 box = np.int0(box)
+#     4 cv2.drawContours(img,[box],0,(0,0,255),2)
