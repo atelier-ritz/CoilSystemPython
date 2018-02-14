@@ -16,17 +16,18 @@ main.py
 callbacks.py
 │
 │   
+└───syntax.py [highlight the keywords in GUI editor_vision]
 |
-└───fieldManager.py
-│   	|   s826.py
+└───fieldManager.py [send commands to s826; store the current field strength]
+│   	|   s826.py [control the s826 I/O]
 │  
 │
-└───visoin.py
-│       │   filterlib.py
-│       │   objectDetection.py
+└───visoin.py [capture frames; apply filters; object detection]
+│       │   filterlib.py [define filters]
+│       │   objectDetection.py [define object detection algorithms]
 │
 │
-└───subthread.py
+└───subthread.py [finish multithreading tasks]
 
 ```
 ## Dependencies
