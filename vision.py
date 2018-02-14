@@ -116,8 +116,10 @@ class Vision(object):
     # so that subthread can access it directly
     #==============================================================================================
     def processObjectDetection(self,imageFiltered,imageOriginal):
-        screenCnt = objectDetection.biggestSquareContour(imageFiltered,sampleNum=5,epsilon=20)
+        # convert to rgb so that coloured lines can be drawn on top
         imageOriginal = cv2.cvtColor(imageOriginal, cv2.COLOR_GRAY2RGB)
+        # object detection algorithm starts here
+        screenCnt = objectDetection.biggestSquareContour(imageFiltered,sampleNum=5,epsilon=20)
         if not screenCnt == []:
             cv2.drawContours(imageOriginal, [screenCnt], -1, (0, 255, 0), 3)
         return imageOriginal
