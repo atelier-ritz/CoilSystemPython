@@ -8,6 +8,23 @@ open terminal and cd to the target directory
 
 python3 main.py
 
+## Program Structure
+
+main
+|
+---callbacks.py
+	|
+	--------fieldManager.py-------s826.py
+	|
+	--------vision.py
+	|	|
+	|	-------------filterlib.py
+	|	|
+	|	-------------objectDetection.py
+	|
+	|
+	--------subthread.py
+
 ## Dependencies
 
 1. opencv
