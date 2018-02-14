@@ -9,39 +9,22 @@ open terminal and cd to the target directory
 python3 main.py
 
 ## Program Structure
-
-main
-|
----callbacks.py
-	|
-	--------fieldManager.py-------s826.py
-	|
-	--------vision.py
-	|	|
-	|	-------------filterlib.py
-	|	|
-	|	-------------objectDetection.py
-	|
-	|
-	--------subthread.py
 	
 ```
-project
-│   README.md
-│   file001.txt    
+main.py
 │
-└───folder1
-│   │   file011.txt
-│   │   file012.txt
-│   │
-│   └───subfolder1
-│       │   file111.txt
-│       │   file112.txt
-│       │   ...
 │   
-└───folder2
-    │   file021.txt
-    │   file022.txt
+|
+└───fieldManager.py
+│   	|   s826.py
+│  
+│
+└───visoin.py
+│       │   filterlib.py
+│       │   objectDetection.py
+│  
+└───subthread.py
+
 ```
 ## Dependencies
 
