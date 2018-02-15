@@ -43,7 +43,7 @@ class GUI(QMainWindow,Ui_MainWindow):
     def setupTimer(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
-        self.timer.start(5) # msec
+        self.timer.start(15) # msec
 
     def update(self):
         vision.updateFrame()

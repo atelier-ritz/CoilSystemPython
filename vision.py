@@ -135,11 +135,10 @@ class Vision(object):
     def processObjectDetection(self,imageFiltered,imageOriginal):
         # convert to rgb so that coloured lines can be drawn on top
         imageOriginal = cv2.cvtColor(imageOriginal, cv2.COLOR_GRAY2RGB)
-        
+
         # object detection algorithm starts here
         # In this function, information about the agent will be updated, and the original image with
         # the detected objects highlighted will be returned
         algorithm = getattr(objectDetection,self._detectionAlgorithm,objectDetection.algorithmNotDefined)
         imageProcessed = algorithm(imageFiltered,imageOriginal,self.agent1) # pass instances of Agent class if you want to update its info
-        # imageProcessed = getattr(objectDetection,self._detectionAlgorithm,defaultAction)
         return imageProcessed
