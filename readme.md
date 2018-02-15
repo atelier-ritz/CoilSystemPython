@@ -9,6 +9,13 @@ open terminal and cd to the target directory
 python3 main.py
 
 ## Program Structure
+To have a better understanding of the program, I would recommend you first have a look at "fieldManager.py".
+
+After that, open the GUI and "callbacks.py" to follow the signal flow and event handler (pyqtSlot).
+
+Go through "vision.py" to see how images are processed, and "objectDetection.py" to see how objects are detected and stored in instances of Agent class.
+
+Read "subthread.py" in the end because it uses all the above-mentioned classes to do some complex stuff. E.g. Apply a rotational field with time-varying frequency/magnitude based on the position of the object detected.
 	
 ```
 main.py
