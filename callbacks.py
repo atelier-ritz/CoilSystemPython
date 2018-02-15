@@ -26,11 +26,8 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.setupUi(self)
         self.setupTimer()
         self.setupSubThread(field,vision)
-        self.setupFileMenu()
         self.connectSignals()
         self.linkWidgets()
-
-        self.currentFilePath = '' # directory to store the vision editor
 
     #=====================================================
     # [override] terminate the subThread and clear currents when closing the window
@@ -68,8 +65,8 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.chb_bypassFilters.toggled.connect(self.on_chb_bypassFilters)
         self.chb_startPauseCapture.toggled.connect(self.on_chb_startPauseCapture)
         self.btn_refreshFilterRouting.clicked.connect(self.on_btn_refreshFilterRouting)
+        # object detection
         self.chb_objectDetection.toggled.connect(self.on_chb_objectDetection)
-
         # Subthread Tab
         self.chb_startStopSubthread.toggled.connect(self.on_chb_startStopSubthread)
         self.dsb_freq.valueChanged.connect(self.thrd.setFreq)
@@ -114,34 +111,6 @@ class GUI(QMainWindow,Ui_MainWindow):
         # disable some buttons etc.
 
     #=====================================================
-    # File Menu
-    #=====================================================
-    def setupFileMenu(self):
-        fileMenu = QMenu("&File", self)
-        self.menuBar().addMenu(fileMenu)
-        fileMenu.addAction("&New Editor", self.newFile, "Ctrl+N")
-        fileMenu.addAction("&Open Editor...", self.openFile, "Ctrl+O")
-        fileMenu.addAction("&Save Editor", self.saveFile, "Ctrl+S")
-        fileMenu.addAction("E&xit", QApplication.instance().quit, "Ctrl+Q")
-
-    def newFile(self):
-        self.editor_vision.clear()
-        self.currentFilePath = ''
-
-    def openFile(self, path=None):
-        path, _ = QFileDialog.getOpenFileName(self, "Open File", '',
-                "txt Files (*.txt)")
-
-    def saveFile(self):
-        if self.currentFilePath == '':
-            self.currentFilePath, _ = QFileDialog.getSaveFileName(self, "Save file", '',
-                    "txt Files (*.txt)")
-        path = self.currentFilePath
-        saveFile = open(path, "w")
-        text = str(self.editor_vision.toPlainText())
-        saveFile.write(text)
-        saveFile.close()
-    #=====================================================
     # Callback Functions
     #=====================================================
     # General control tab
@@ -175,7 +144,8 @@ class GUI(QMainWindow,Ui_MainWindow):
         vision.createFilterRouting(self.editor_vision.toPlainText().splitlines())
 
     def on_chb_objectDetection(self,state):
-        vision.setStateObjectDetection(state)
+        algorithm = self.cbb_objectDetectionAlgorithm.currentText()
+        vision.setStateObjectDetection(state,algorithm)
 
     # subthread
     def on_chb_startStopSubthread(self,state):

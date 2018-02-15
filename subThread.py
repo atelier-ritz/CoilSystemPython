@@ -58,5 +58,6 @@ class SubThread(QThread):
             fieldY = 2 * sin(theta)
             self.field.setX(fieldX)
             self.field.setY(fieldY)
+            print('X: {}, Y: {}'.format(self.vision.agent1.x,self.vision.agent1.y))
             if self.stopped:
                 return
