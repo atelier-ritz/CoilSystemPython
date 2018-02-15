@@ -49,7 +49,7 @@ Go to GUI and add the name of your algorithm in algorithm combobox.
 
 Go to vision.py __init__() function. Add a class attribute of the object to be detected. For example, self.gripper = Agent(), self.cargo = Agent()
 
-Define your algorithm in objectDetection.py. You can use algorithmA as an Example.
+Define your algorithm in objectDetection.py. Refer to algorithmA() as an Example.
 
 Go to processObjectDetection() and pass your agents to the algorithm you just created.
 
