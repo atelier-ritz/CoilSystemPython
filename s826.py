@@ -4,7 +4,6 @@ BOARD = 0
 
 class S826(object):
     def __init__(self):
-        self._flag = 0
         errcode = self.s826_init()
         if errcode != 1:
             print('Cannot detect s826 board. Error code: {}'.format(errcode))

@@ -1,25 +1,22 @@
 import cv2
-import filterlib
 
-#========================================
-# ALWAYS use greyscale image as input
-# e.g. grey() -> canny() -> biggestSquareContour()
-#========================================
-def biggestSquareContour(image,sampleNum,epsilon):
-    # image = filterlib.grey(image)
-    image, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = sorted(contours, key = cv2.contourArea, reverse = True)[:sampleNum]
-    screenCnt = []
-    for c in cnts:
-        peri = cv2.arcLength(c, True)
-        approx = cv2.approxPolyDP(c, epsilon / 1000.0 * peri, True)
-        if len(approx) == 4:
-            screenCnt = approx
-            break
-    return screenCnt
+#====================================================
+# ALWAYS use binary image as input in this algorithm
+#====================================================
+def algorithmA(self,imageFiltered,imageOriginal,agent):
+    im2, contours, hierarchy = cv2.findContours(imageFiltered, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cnt = contours[4]
+    x,y,w,h = cv2.boundingRect(cnt)
+    cv2.rectangle(imageOriginal,(x,y),(x+w,y+h),(0,255,0),2)
+    return imageOriginal
 
-# def minAreaBoundingRect(self,cnt):
-#     rect = cv2.minAreaRect(cnt)
-#     2 box = cv2.boxPoints(rect)
-#     3 box = np.int0(box)
-#     4 cv2.drawContours(img,[box],0,(0,0,255),2)
+class Agent():
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.orientation = 0
+
+    def set(self,x,y,orientation = 0):
+        self.x = x
+        self.y = y
+        self.orientation = orientation
