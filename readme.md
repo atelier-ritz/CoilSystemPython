@@ -82,3 +82,9 @@ sudo apt-get install qt4-designer
 ## USB camera or Firewire Camera
 
 Can specify the camera in vision.py
+
+## Screen Recording
+
+Because Ubuntu 17.10 rolles back to GNOME (it used Unity in previous versions), simplescreenrecorder cannot be used.
+
+Reommended: https://github.com/foss-project/green-recorder
