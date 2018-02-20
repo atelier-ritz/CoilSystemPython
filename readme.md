@@ -85,6 +85,6 @@ Can specify the camera in vision.py
 
 ## Screen Recording
 
-Because Ubuntu 17.10 rolles back to GNOME (it used Unity in previous versions), simplescreenrecorder cannot be used.
+Simplescreenrecorder doesn't work property because Ubuntu 17.10 rolles back to GNOME (it used Unity in previous versions). 
 
 Reommended: https://github.com/foss-project/green-recorder
