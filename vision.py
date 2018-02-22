@@ -1,4 +1,5 @@
 import cv2, sys, re
+from pydc1394 import Camera
 import filterlib
 import objectDetection
 from objectDetection import Agent
@@ -29,28 +30,29 @@ class Vision(object):
         #=================================================
         # If using a USB webcamera
         #=================================================
-        self.cap = cv2.VideoCapture(0)
-        if not self.cap.isOpened():
-            print('Camera is not detected. End program.')
-            self.cap.release()
-            sys.exit()
+        # self.cap = cv2.VideoCapture(0)
+        # if not self.cap.isOpened():
+        #     print('Camera is not detected. End program.')
+        #     self.cap.release()
+        #     sys.exit()
 
         #=================================================
         # If using firewire camera
         #=================================================
-        # from pydc1394 import Camera
-        # self.cam = Camera(guid=2672909587849792)
+
+        self.cam = Camera(guid=2672909587849792)
         # self.cam = Camera(guid=2672909588927744)
-        # print("====================================================")
-        # print("Vendor:", self.cam.vendor)
-        # print("Model:", self.cam.model)
-        # print("GUID:", self.cam.guid)
-        # print("Mode:", self.cam.mode)
-        # print("Framerate: ", self.cam.rate)
-        # print("Available modes", [mode.name for mode in self.cam.modes])
-        # print("====================================================")
-        # self.cam.start_capture()
-        # self.cam.start_video()
+        # self.cam.mode = self.cam.modes[2]
+        print("====================================================")
+        print("Vendor:", self.cam.vendor)
+        print("Model:", self.cam.model)
+        print("GUID:", self.cam.guid)
+        print("Mode:", self.cam.mode)
+        print("Framerate: ", self.cam.rate)
+        print("Available modes", [mode.name for mode in self.cam.modes])
+        print("====================================================")
+        self.cam.start_capture()
+        self.cam.start_video()
 
 
         #=================================================
@@ -61,24 +63,8 @@ class Vision(object):
         #=================================================
         # If using a USB webcamera
         #=================================================
-        if self._isUpdating:
-            _, frameOriginal = self.cap.read()
-            if not self._isFilterBypassed and not self.filterRouting == []:
-                frameFiltered = self.processFilters(frameOriginal.copy())
-            else:
-                frameFiltered = frameOriginal
-            if self._isObjectDetection:
-                frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
-            else:
-                frameProcessed = frameFiltered
-            cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
-            self.frame = frameProcessed
-
-        #=================================================
-        # If using firewire camera
-        #=================================================
         # if self._isUpdating:
-        #     frameOriginal = self.cam.dequeue()
+        #     _, frameOriginal = self.cap.read()
         #     if not self._isFilterBypassed and not self.filterRouting == []:
         #         frameFiltered = self.processFilters(frameOriginal.copy())
         #     else:
@@ -89,7 +75,23 @@ class Vision(object):
         #         frameProcessed = frameFiltered
         #     cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
         #     self.frame = frameProcessed
-        #     frameOriginal.enqueue()
+
+        #=================================================
+        # If using firewire camera
+        #=================================================
+        if self._isUpdating:
+            frameOriginal = self.cam.dequeue()
+            if not self._isFilterBypassed and not self.filterRouting == []:
+                frameFiltered = self.processFilters(frameOriginal.copy())
+            else:
+                frameFiltered = frameOriginal
+            if self._isObjectDetection:
+                frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
+            else:
+                frameProcessed = frameFiltered
+            cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
+            self.frame = frameProcessed
+            frameOriginal.enqueue()
 
 
     #==============================================================================================

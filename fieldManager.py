@@ -12,7 +12,7 @@ class FieldManager(object):
         self.y = 0
         self.z = 0
         self.dac = dac
-        
+
     # Uniform field
     def setX(self,mT):
         self.dac.s826_aoPin(PIN_X1[0], 2, mT / PIN_X1[1])

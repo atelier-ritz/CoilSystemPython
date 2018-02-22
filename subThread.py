@@ -68,7 +68,7 @@ class SubThread(QThread):
         # 4 'SpanAngle (deg)'
         #=============================
         startTime = time.time()
-        record = 'Time(s), FieldX(mT), FiledY(mT), FieldZ(mT) \n' # output to a txt file
+        record = 'Time(s), FieldX(mT), FiledY(mT), FieldZ(mT), X(pixel), Y(pixel) \n' # output to a txt file
         counter = 0
         while True:
             t = time.time() - startTime # elapsed time (sec)
@@ -80,13 +80,9 @@ class SubThread(QThread):
             self.field.setZ(fieldZ)
             # save to txt
             counter += 1
-            if counter > 100:
+            if counter > 300:
                 counter = 0
-                record = record + '{:.5f}, {:.2f}, {:.2f}, {:.2f}\n'.format(t,fieldX,fieldY,fieldZ)
-
-            # print the position of the detected object
-            # print('X: {}, Y: {}'.format(self.vision.agent1.x,self.vision.agent1.y))
-
+                record = record + '{:.5f}, {:.2f}, {:.2f}, {:.2f}, {}, {}\n'.format(t,fieldX,fieldY,fieldZ,self.vision.agent1.x,self.vision.agent1.y)
             if self.stopped:
                 text_file = open("Output.txt", "w")
                 text_file.write(record)

@@ -16,7 +16,7 @@ After that, open the GUI and "callbacks.py" to follow the signal flow and event 
 Go through "vision.py" to see how images are processed, and "objectDetection.py" to see how objects are detected and stored in instances of Agent class.
 
 Read "subthread.py" in the end because it uses all the above-mentioned classes to do some complex stuff. E.g. Apply a rotational field with time-varying frequency/magnitude based on the position of the object detected.
-	
+
 ```
 main.py
 
@@ -41,7 +41,7 @@ callbacks.py
 
 Go to filterlib.py and define your filter. E.g. myfilter(param1,param2,...)
 
-Then you can directly use it in the GUI by typing "myfilter(param1, param2,...)" 
+Then you can directly use it in the GUI by typing "myfilter(param1, param2,...)"
 
 ## To create a new object detection algorithm
 
@@ -73,6 +73,12 @@ pip3 install pyqt5
 
 https://github.com/jordens/pydc1394
 
+4. s826Driver
+
+Download "Linux Software Development Kit" and follow the instructions in Readme.
+
+http://www.sensoray.com/products/826.htm
+
 ## GUI Designer
 
 qt-designer is used.
@@ -85,6 +91,6 @@ Can specify the camera in vision.py
 
 ## Screen Recording
 
-Simplescreenrecorder doesn't work property because Ubuntu 17.10 rolles back to GNOME (it used Unity in previous versions). 
+Simplescreenrecorder doesn't work property because Ubuntu 17.10 rolles back to GNOME (it used Unity in previous versions).
 
 Reommended: https://github.com/foss-project/green-recorder
