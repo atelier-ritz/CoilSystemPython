@@ -68,8 +68,13 @@ class GUI(QMainWindow,Ui_MainWindow):
         # object detection
         self.chb_objectDetection.toggled.connect(self.on_chb_objectDetection)
         # Subthread Tab
+        self.cbb_subThread.currentTextChanged.connect(self.on_cbb_subThread)
         self.chb_startStopSubthread.toggled.connect(self.on_chb_startStopSubthread)
-        self.dsb_freq.valueChanged.connect(self.thrd.setFreq)
+        self.dsb_subThreadParam0.valueChanged.connect(self.thrd.setParam0)
+        self.dsb_subThreadParam1.valueChanged.connect(self.thrd.setParam1)
+        self.dsb_subThreadParam2.valueChanged.connect(self.thrd.setParam2)
+        self.dsb_subThreadParam3.valueChanged.connect(self.thrd.setParam3)
+        self.dsb_subThreadParam4.valueChanged.connect(self.thrd.setParam4)
 
     #=====================================================
     # Link GUI elements
@@ -148,10 +153,26 @@ class GUI(QMainWindow,Ui_MainWindow):
         vision.setStateObjectDetection(state,algorithm)
 
     # subthread
+    def on_cbb_subThread(self,subThreadName):
+        # an array that stores the name for params. Return param0, param1, ... if not defined.
+        labelNames = self.thrd.labelOnGui.get(subThreadName,self.thrd.labelOnGui['default'])
+        minVals = self.thrd.minOnGui.get(subThreadName,self.thrd.minOnGui['default'])
+        maxVals = self.thrd.maxOnGui.get(subThreadName,self.thrd.maxOnGui['default'])
+        for i in range(5):
+            targetLabel = 'lbl_subThreadParam' + str(i)
+            targetSpinbox = 'dsb_subThreadParam' + str(i)
+            getattr(self,targetLabel).setText(labelNames[i])
+            getattr(self,targetSpinbox).setMinimum(minVals[i])
+            getattr(self,targetSpinbox).setMaximum(maxVals[i])
+
+
     def on_chb_startStopSubthread(self,state):
+        subThreadName = self.cbb_subThread.currentText()
         if state:
-            self.thrd.setup()
+            self.cbb_subThread.setEnabled(False)
+            self.thrd.setup(subThreadName)
             self.thrd.start()
-            print('Subthread starts.')
+            print('Subthread "{}" starts.'.format(subThreadName))
         else:
+            self.cbb_subThread.setEnabled(True)
             self.thrd.stop()
