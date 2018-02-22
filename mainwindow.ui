@@ -492,7 +492,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLabel" name="lbl_subThreadParam0">
           <property name="text">
-           <string>Frequency (Hz)</string>
+           <string>param0</string>
           </property>
          </widget>
         </item>
@@ -516,7 +516,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLabel" name="lbl_subThreadParam1">
           <property name="text">
-           <string>Magnitude (mT)</string>
+           <string>param1</string>
           </property>
          </widget>
         </item>
@@ -540,7 +540,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLabel" name="lbl_subThreadParam2">
           <property name="text">
-           <string>Azimuthal Angle (deg)</string>
+           <string>param2</string>
           </property>
          </widget>
         </item>
@@ -564,7 +564,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLabel" name="lbl_subThreadParam3">
           <property name="text">
-           <string>Polar Angle (deg)</string>
+           <string>param3</string>
           </property>
          </widget>
         </item>
@@ -588,7 +588,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLabel" name="lbl_subThreadParam4">
           <property name="text">
-           <string>Span Angle</string>
+           <string>param4</string>
           </property>
          </widget>
         </item>
