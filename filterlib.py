@@ -14,6 +14,7 @@ def grey(inputImage,args=''):
 def blur(inputImage,args):
     arg = args.split(',')
     return cv2.GaussianBlur(inputImage,(int(arg[0])*2+1,int(arg[0])*2+1),0)
+
 #========================================
 # threshold(lowerBound,higherBound)
 # Input must be a greyscale image

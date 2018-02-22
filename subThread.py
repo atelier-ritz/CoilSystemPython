@@ -24,12 +24,12 @@ class SubThread(QThread):
                         'rotateYZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'rotateXZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
-        self.minOnGui = {'twistField': [-100,0,-360,0,0],
+        self.minOnGui = {'twistField': [-100,0,-1080,0,0],
                         'rotateXY': [-100,0,0,0,0],
                         'rotateYZ': [-100,0,0,0,0],
                         'rotateXZ': [-100,0,0,0,0],
                         'default':[0,0,0,0,0]}
-        self.maxOnGui = {'twistField': [100,14,360,180,360],
+        self.maxOnGui = {'twistField': [100,14,1080,180,360],
                         'rotateXY': [100,14,0,0,0],
                         'rotateYZ': [100,14,0,0,0],
                         'rotateXZ': [100,14,0,0,0],
@@ -59,7 +59,7 @@ class SubThread(QThread):
     # Start defining your subthread from here
     #=========================================
     def twistField(self):
-        #=============================
+        #======================d=======
         # reference params
         # 0 'Frequency (Hz)'
         # 1 'Magniude (mT)'
@@ -82,7 +82,7 @@ class SubThread(QThread):
             counter += 1
             if counter > 300:
                 counter = 0
-                record = record + '{:.5f}, {:.2f}, {:.2f}, {:.2f}, {}, {}\n'.format(t,fieldX,fieldY,fieldZ,self.vision.agent1.x,self.vision.agent1.y)
+                record = record + '{:.5f}, {:.2f}, {:.2f}, {:.2f}, {}, {}\n'.format(t,self.field.x,self.field.y,self.field.z,self.vision.agent1.x,self.vision.agent1.y)
             if self.stopped:
                 text_file = open("Output.txt", "w")
                 text_file.write(record)
