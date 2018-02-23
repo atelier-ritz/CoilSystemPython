@@ -21,7 +21,6 @@ class Vision(object):
         self._isFilterBypassed = True
         self._isObjectDetection = False
         self._detectionAlgorithm = ''
-        self.frame = None # last captured frame
         self.filterRouting = [] # data structure: {"filterName", "args"}, defined in the editor
         # define the agents that you want to detect with objectDetection algorithm
         self.agent1 = Agent()
@@ -74,7 +73,6 @@ class Vision(object):
         #     else:
         #         frameProcessed = frameFiltered
         #     cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
-        #     self.frame = frameProcessed
 
         #=================================================
         # If using firewire camera
@@ -90,7 +88,6 @@ class Vision(object):
             else:
                 frameProcessed = frameFiltered
             cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
-            self.frame = frameProcessed
             frameOriginal.enqueue()
 
 
