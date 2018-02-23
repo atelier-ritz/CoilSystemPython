@@ -26,6 +26,9 @@ class S826(object):
         for i in range(8):
             self.s826_setRange(i,2)
 
+    # ======================================================================
+    # rangeCode: 0: 0 +5V; 1: 0 +10V; 2: -5 +5V; 3:-10 +10V.
+    # ======================================================================
     def s826_setRange(self,chan,rangeCode):
         self.lowerV[chan] = RANGE_PARAM[rangeCode][0]
         self.rangeV[chan] = RANGE_PARAM[rangeCode][1]
@@ -34,7 +37,6 @@ class S826(object):
     # ======================================================================
     # Set 1 AO channel.
     # chan : DAC channel # in the range 0 to 7.
-    # rangeCode: 0: 0 +5V; 1: 0 +10V; 2: -5 +5V; 3:-10 +10V.
     # outputV: Desired analog output voltage (can be positive and negative).
     # ======================================================================
     def s826_aoPin(self,chan,outputV):
