@@ -1,5 +1,5 @@
 # assign pin # to the coil
-PIN_X1 = [0, 5.003] # pin #, factor
+PIN_X1 = [0, 5.003] # pin number, factor number (mT/V)
 PIN_X2 = [3, 4.879]
 PIN_Y1 = [4, 5.143]
 PIN_Y2 = [1, 5.024]
