@@ -1,9 +1,16 @@
 import cv2
 
+#=============================================================================================
+# Call this function if selected filterName is not defined
+#=============================================================================================
+def filterNotDefined(inputImage,args):
+    print('Filter name not defined in filterlib.py')
+    return inputImage
+
 #========================================
 # Usage: grey()
 #========================================
-def grey(inputImage,args=''):
+def grey(inputImage,args):
     return cv2.cvtColor(inputImage, cv2.COLOR_BGR2GRAY)
 
 #========================================

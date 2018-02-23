@@ -5,7 +5,7 @@ import numpy as np
 # Call this function if selected algorithm is not defined
 #=============================================================================================
 def algorithmNotDefined(imageFiltered,imageOriginal,*args):
-    print('This algorithm is not defined in objectDetection.py')
+    print('Algorithm name not defined in objectDetection.py')
     return imageOriginal
 
 #====================================================

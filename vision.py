@@ -113,7 +113,7 @@ class Vision(object):
         for line in text:
             line = line.split('//')[0]  # strip after //
             line = line.strip()         # strip spaces at both ends
-            match = re.match(r"(?P<function>[a-z0-9_]+)\((?P<args>.+)\)", line)
+            match = re.match(r"(?P<function>[a-z0-9_]+)\((?P<args>.*)\)", line)
             if match:
                 name = match.group('function')
                 args = match.group('args')
@@ -122,7 +122,7 @@ class Vision(object):
 
     def processFilters(self,image):
         for item in self.filterRouting:
-            outputImage = getattr(filterlib,item['filterName'])(image,item['args'])
+            outputImage = getattr(filterlib,item['filterName'],filterlib.filterNotDefined)(image,item['args'])
         # You can add custom filters here if you don't want to use the editor
         return outputImage
 
