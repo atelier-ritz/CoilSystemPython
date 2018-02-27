@@ -23,16 +23,19 @@ class SubThread(QThread):
                         'rotateXY': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'rotateYZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'rotateXZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
+                        'cutting_oni': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
         self.minOnGui = {'twistField': [-100,0,-1080,0,0],
                         'rotateXY': [-100,0,0,0,0],
                         'rotateYZ': [-100,0,0,0,0],
                         'rotateXZ': [-100,0,0,0,0],
+                        'cutting_oni': [-30,-14,0,0,0],
                         'default':[0,0,0,0,0]}
         self.maxOnGui = {'twistField': [100,14,1080,180,360],
                         'rotateXY': [100,14,0,0,0],
                         'rotateYZ': [100,14,0,0,0],
                         'rotateXZ': [100,14,0,0,0],
+                        'cutting_oni': [30,14,0,0,0],
                         'default':[0,0,0,0,0]}
 
     def setup(self,subThreadName):
@@ -123,7 +126,7 @@ class SubThread(QThread):
             if self.stopped:
                 return
 
-    def rotateYZ(self):
+    def cutting_oni(self):
         #=============================
         # reference params
         # 0 'Frequency (Hz)'
@@ -133,9 +136,7 @@ class SubThread(QThread):
         while True:
             t = time.time() - startTime # elapsed time (sec)
             theta = 2 * pi * self.params[0] * t
-            fieldY = self.params[1] * cos(theta)
-            fieldZ = self.params[1] * sin(theta)
-            self.field.setY(fieldY)
+            fieldZ = self.params[1] * abs(sin(theta))
             self.field.setZ(fieldZ)
             if self.stopped:
                 return

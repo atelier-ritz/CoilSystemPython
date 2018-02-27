@@ -458,6 +458,11 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <property name="text">
+       <string>cutting_oni</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>twistField</string>
       </property>
      </item>

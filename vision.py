@@ -1,4 +1,4 @@
-import cv2, sys, re
+import cv2, sys, re, time
 from pydc1394 import Camera
 import filterlib
 import objectDetection
@@ -16,7 +16,9 @@ def showClickedCoordinate(event,x,y,flags,param):
 
 
 class Vision(object):
-    def __init__(self):
+    def __init__(self,index,guid,buffersize):
+        self._id = index
+        self._guid = guid
         self._isUpdating = True
         self._isFilterBypassed = True
         self._isObjectDetection = False
@@ -34,15 +36,12 @@ class Vision(object):
         #     print('Camera is not detected. End program.')
         #     self.cap.release()
         #     sys.exit()
-
         #=================================================
         # If using firewire camera
         #=================================================
-
-        self.cam = Camera(guid=2672909587849792)
-        # self.cam = Camera(guid=2672909588927744)
-        # self.cam.mode = self.cam.modes[2]
+        self.cam = Camera(guid=self._guid)
         print("====================================================")
+        print("CameraId:", self._id)
         print("Vendor:", self.cam.vendor)
         print("Model:", self.cam.model)
         print("GUID:", self.cam.guid)
@@ -50,13 +49,14 @@ class Vision(object):
         print("Framerate: ", self.cam.rate)
         print("Available modes", [mode.name for mode in self.cam.modes])
         print("====================================================")
-        self.cam.start_capture()
+        self.cam.start_capture(bufsize=buffersize)
         self.cam.start_video()
-
+        time.sleep(0.5)
 
         #=================================================
-        cv2.namedWindow('Capture (Click to print coordinate)',16) # cv2.GUI_NORMAL = 16
-        cv2.setMouseCallback('Capture (Click to print coordinate)',showClickedCoordinate)
+        cv2.namedWindow(self.windowName(),16) # cv2.GUI_NORMAL = 16
+        cv2.moveWindow(self.windowName(), 600,-320+340*self._id);
+        cv2.setMouseCallback(self.windowName(),showClickedCoordinate)
 
     def updateFrame(self):
         #=================================================
@@ -72,8 +72,7 @@ class Vision(object):
         #         frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
         #     else:
         #         frameProcessed = frameFiltered
-        #     cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
-
+        #     cv2.imshow(self.windowName(),frameProcessed)
         #=================================================
         # If using firewire camera
         #=================================================
@@ -87,9 +86,14 @@ class Vision(object):
                 frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
             else:
                 frameProcessed = frameFiltered
-            cv2.imshow('Capture (Click to print coordinate)',frameProcessed)
+            cv2.imshow(self.windowName(),frameProcessed)
             frameOriginal.enqueue()
 
+    #==============================================================================================
+    # obtain instance attributes
+    #==============================================================================================
+    def windowName(self):
+        return 'CamID:{} (Click to print coordinate)'.format(self._id)
 
     #==============================================================================================
     # set instance attributes

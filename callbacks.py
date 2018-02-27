@@ -15,7 +15,8 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 # Creating instances of fieldManager and Camera
 #=========================================================
 field = FieldManager(S826())
-vision = Vision()
+vision = Vision(index=1,guid=2672909587849792,buffersize=4)
+vision2 = Vision(index=2,guid=2672909588927744,buffersize=10)
 #=========================================================
 # a class that handles the signal and callbacks of the GUI
 #=========================================================
@@ -47,6 +48,12 @@ class GUI(QMainWindow,Ui_MainWindow):
 
     def update(self):
         vision.updateFrame()
+        try:
+            vision2
+        except NameError:
+            pass
+        else:
+            vision2.updateFrame()
 
     #=====================================================
     # Connect buttons etc. of the GUI to callback functions
