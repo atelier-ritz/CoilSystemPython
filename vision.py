@@ -8,9 +8,9 @@ from objectDetection import Agent
 # Mouse callback Functions
 #=============================================================================================
 def showClickedCoordinate(event,x,y,flags,param):
-    global mouseX,mouseY
+    # global mouseX,mouseY
     if event == cv2.EVENT_LBUTTONDOWN:
-        mouseX,mouseY = x,y
+        # mouseX,mouseY = x,y
         print('Clicked position  x: {} y: {}'.format(x,y))
 
 
