@@ -407,12 +407,17 @@ p, li { white-space: pre-wrap; }
      </property>
      <item>
       <property name="text">
-       <string>algorithmA</string>
+       <string>detectBiggestContour</string>
       </property>
      </item>
      <item>
       <property name="text">
        <string>algorithmB</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>primaryComponentAnalysis</string>
       </property>
      </item>
     </widget>

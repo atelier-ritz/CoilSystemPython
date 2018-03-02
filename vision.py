@@ -51,7 +51,6 @@ class Vision(object):
         print("====================================================")
         self.cam.start_capture(bufsize=buffersize)
         self.cam.start_video()
-        time.sleep(0.5)
 
         #=================================================
         cv2.namedWindow(self.windowName(),16) # cv2.GUI_NORMAL = 16
