@@ -69,7 +69,7 @@ class Vision(object):
         #         frameFiltered = frameOriginal
         #     if self._isObjectDetection:
         #         frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
-        #     else:
+        #     else:frameOriginal
         #         frameProcessed = frameFiltered
         #     cv2.imshow(self.windowName(),frameProcessed)
         #=================================================
@@ -105,7 +105,7 @@ class Vision(object):
 
     def setStateObjectDetection(self,state,algorithm):
         self._isObjectDetection = state
-        self._detectionAlgorithm = algorithm
+        self._detectionAlgorithmframeOriginal = algorithm
 
     #==============================================================================================
     # <Filters>
