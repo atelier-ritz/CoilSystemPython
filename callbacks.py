@@ -158,6 +158,7 @@ class GUI(QMainWindow,Ui_MainWindow):
     def on_chb_objectDetection(self,state):
         algorithm = self.cbb_objectDetectionAlgorithm.currentText()
         vision.setStateObjectDetection(state,algorithm)
+        self.cbb_objectDetectionAlgorithm.setEnabled(not state)
 
     # subthread
     def on_cbb_subThread(self,subThreadName):
