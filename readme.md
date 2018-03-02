@@ -37,6 +37,16 @@ callbacks.py
 └───subthread.py [run multithreading tasks]
 
 ```
+## To enable/disable 2nd camera
+
+Go to callbacks.py and comment out line 19 
+
+```
+vision2 = Vision(index=2,guid=2672909588927744,buffersize=10)
+
+```
+Note: In this example program, all the filters and object detection algorithms apply to the 1st camera only.
+
 ## To create a new filter
 
 Go to filterlib.py and define your filter. E.g. myfilter(param1,param2,...)
