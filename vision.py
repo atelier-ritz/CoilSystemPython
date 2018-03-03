@@ -125,9 +125,9 @@ class Vision(object):
 
     def processFilters(self,image):
         for item in self.filterRouting:
-            outputImage = getattr(filterlib,item['filterName'],filterlib.filterNotDefined)(image,item['args'])
+            image = getattr(filterlib,item['filterName'],filterlib.filterNotDefined)(image,item['args'])
         # You can add custom filters here if you don't want to use the editor
-        return outputImage
+        return image
 
     #==============================================================================================
     # <object detection>
