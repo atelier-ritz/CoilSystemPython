@@ -16,7 +16,7 @@ def showClickedCoordinate(event,x,y,flags,param):
 
 
 class Vision(object):
-    def __init__(self,index,type,guid,buffersize):
+    def __init__(self,index,type,guid=0000000000000000,buffersize=10):
         self._id = index
         self._type = type
         self._guid = guid
