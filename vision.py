@@ -16,8 +16,9 @@ def showClickedCoordinate(event,x,y,flags,param):
 
 
 class Vision(object):
-    def __init__(self,index,guid,buffersize):
+    def __init__(self,index,type,guid,buffersize):
         self._id = index
+        self._type = type
         self._guid = guid
         self._isUpdating = True
         self._isFilterBypassed = True
@@ -28,72 +29,65 @@ class Vision(object):
         self.agent1 = Agent()
         self.agent2 = Agent()
 
-        #=================================================
-        # If using a USB webcamera
-        #=================================================
-        # self.cap = cv2.VideoCapture(0)
-        # if not self.cap.isOpened():
-        #     print('Camera is not detected. End program.')
-        #     self.cap.release()
-        #     sys.exit()
-        #=================================================
-        # If using firewire camera
-        #=================================================
-        self.cam = Camera(guid=self._guid)
-        print("====================================================")
-        print("CameraId:", self._id)
-        print("Vendor:", self.cam.vendor)
-        print("Model:", self.cam.model)
-        print("GUID:", self.cam.guid)
-        print("Mode:", self.cam.mode)
-        print("Framerate: ", self.cam.rate)
-        print("Available modes", [mode.name for mode in self.cam.modes])
-        print("====================================================")
-        self.cam.start_capture(bufsize=buffersize)
-        self.cam.start_video()
-
-        #=================================================
+        if self.isFireWire():
+            self.cam = Camera(guid=self._guid)
+            print("====================================================")
+            print("CameraId:", self._id)
+            print("Vendor:", self.cam.vendor)
+            print("Model:", self.cam.model)
+            print("GUID:", self.cam.guid)
+            print("Mode:", self.cam.mode)
+            print("Framerate: ", self.cam.rate)
+            print("Available modes", [mode.name for mode in self.cam.modes])
+            print("====================================================")
+            self.cam.start_capture(bufsize=buffersize)
+            self.cam.start_video()
+        else:
+            self.cap = cv2.VideoCapture(0)
+            if not self.cap.isOpened():
+                print('Camera is not detected. End program.')
+                self.cap.release()
+                sys.exit()
+                
         cv2.namedWindow(self.windowName(),16) # cv2.GUI_NORMAL = 16
         cv2.moveWindow(self.windowName(), 600,-320+340*self._id);
         cv2.setMouseCallback(self.windowName(),showClickedCoordinate)
 
     def updateFrame(self):
-        #=================================================
-        # If using a USB webcamera
-        #=================================================
-        # if self._isUpdating:
-        #     _, frameOriginal = self.cap.read()
-        #     if not self._isFilterBypassed and not self.filterRouting == []:
-        #         frameFiltered = self.processFilters(frameOriginal.copy())
-        #     else:
-        #         frameFiltered = frameOriginal
-        #     if self._isObjectDetection:
-        #         frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
-        #     else:frameOriginal
-        #         frameProcessed = frameFiltered
-        #     cv2.imshow(self.windowName(),frameProcessed)
-        #=================================================
-        # If using firewire camera
-        #=================================================
-        if self._isUpdating:
-            frameOriginal = self.cam.dequeue()
+        if self.isFireWire():
+            if self._isUpdating:
+                frameOriginal = self.cam.dequeue()
+                if not self._isFilterBypassed and not self.filterRouting == []:
+                    frameFiltered = self.processFilters(frameOriginal.copy())
+                else:
+                    frameFiltered = frameOriginal
+                if self._isObjectDetection:
+                    frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
+                else:
+                    frameProcessed = frameFiltered
+                cv2.imshow(self.windowName(),frameProcessed)
+                frameOriginal.enqueue()
+        else:
+            if self._isUpdating:
+            _, frameOriginal = self.cap.read()
             if not self._isFilterBypassed and not self.filterRouting == []:
                 frameFiltered = self.processFilters(frameOriginal.copy())
             else:
                 frameFiltered = frameOriginal
             if self._isObjectDetection:
                 frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
-            else:
+            else:frameOriginal
                 frameProcessed = frameFiltered
             cv2.imshow(self.windowName(),frameProcessed)
-            frameOriginal.enqueue()
 
     #==============================================================================================
     # obtain instance attributes
     #==============================================================================================
     def windowName(self):
         return 'CamID:{} (Click to print coordinate)'.format(self._id)
-
+    
+    def isFireWire(self):
+        return self._type.lower() == 'firewire'
     #==============================================================================================
     # set instance attributes
     #==============================================================================================
