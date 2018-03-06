@@ -48,7 +48,7 @@ class Vision(object):
                 print('Camera is not detected. End program.')
                 self.cap.release()
                 sys.exit()
-                
+
         cv2.namedWindow(self.windowName(),16) # cv2.GUI_NORMAL = 16
         cv2.moveWindow(self.windowName(), 600,-320+340*self._id);
         cv2.setMouseCallback(self.windowName(),showClickedCoordinate)
@@ -69,23 +69,23 @@ class Vision(object):
                 frameOriginal.enqueue()
         else:
             if self._isUpdating:
-            _, frameOriginal = self.cap.read()
-            if not self._isFilterBypassed and not self.filterRouting == []:
-                frameFiltered = self.processFilters(frameOriginal.copy())
-            else:
-                frameFiltered = frameOriginal
-            if self._isObjectDetection:
-                frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
-            else:frameOriginal
-                frameProcessed = frameFiltered
-            cv2.imshow(self.windowName(),frameProcessed)
+                _, frameOriginal = self.cap.read()
+                if not self._isFilterBypassed and not self.filterRouting == []:
+                    frameFiltered = self.processFilters(frameOriginal.copy())
+                else:
+                    frameFiltered = frameOriginal
+                if self._isObjectDetection:
+                    frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
+                else:frameOriginal
+                    frameProcessed = frameFiltered
+                cv2.imshow(self.windowName(),frameProcessed)
 
     #==============================================================================================
     # obtain instance attributes
     #==============================================================================================
     def windowName(self):
         return 'CamID:{} (Click to print coordinate)'.format(self._id)
-    
+
     def isFireWire(self):
         return self._type.lower() == 'firewire'
     #==============================================================================================
