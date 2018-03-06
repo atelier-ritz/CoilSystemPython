@@ -76,7 +76,7 @@ class Vision(object):
                     frameFiltered = frameOriginal
                 if self._isObjectDetection:
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
-                else:frameOriginal
+                else:
                     frameProcessed = frameFiltered
                 cv2.imshow(self.windowName(),frameProcessed)
 
