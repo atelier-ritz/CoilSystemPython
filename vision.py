@@ -102,7 +102,7 @@ class Vision(object):
     def setStateUpdate(self,state):
         self._isUpdating = state
 
-    def setStateFiltersBypass(self,state):
+    def setStateFiltersBypassed(self,state):
         self._isFilterBypassed = state
 
     def setStateObjectDetection(self,state,algorithm):
