@@ -13,6 +13,7 @@ class S826(object):
         if errcode != 1:
             print('Cannot detect s826 board. Error code: {}'.format(errcode))
             self.s826_close()
+            return
         self.s826_initRange()
 
     def s826_init(self):
