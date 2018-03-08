@@ -13,8 +13,6 @@ def showClickedCoordinate(event,x,y,flags,param):
         # mouseX,mouseY = x,y
         print('Clicked position  x: {} y: {}'.format(x,y))
 
-
-
 class Vision(object):
     def __init__(self,index,type,guid=0000000000000000,buffersize=10):
         self._id = index
@@ -55,26 +53,26 @@ class Vision(object):
 
     def updateFrame(self):
         if self.isFireWire():
-            if self._isUpdating:
+            if self.isUpdating():
                 frameOriginal = self.cam.dequeue()
-                if not self._isFilterBypassed and not self.filterRouting == []:
+                if not self.isFilterBypassed() and not self.filterRouting == []:
                     frameFiltered = self.processFilters(frameOriginal.copy())
                 else:
                     frameFiltered = frameOriginal
-                if self._isObjectDetection:
+                if self.isObjectDetection():
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
                 cv2.imshow(self.windowName(),frameProcessed)
                 frameOriginal.enqueue()
         else:
-            if self._isUpdating:
+            if self.isUpdating():
                 _, frameOriginal = self.cap.read()
-                if not self._isFilterBypassed and not self.filterRouting == []:
+                if not self.isFilterBypassed() and not self.filterRouting == []:
                     frameFiltered = self.processFilters(frameOriginal.copy())
                 else:
                     frameFiltered = frameOriginal
-                if self._isObjectDetection:
+                if self.isObjectDetection():
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
@@ -88,6 +86,16 @@ class Vision(object):
 
     def isFireWire(self):
         return self._type.lower() == 'firewire'
+    
+    def isUpdating(self):
+        return self._isUpdating
+    
+    def isFilterBypassed(self):
+        return self._isFilterBypassed
+    
+    def isObjectDetection(self):
+        return self._isObjectDetection
+    
     #==============================================================================================
     # set instance attributes
     #==============================================================================================
