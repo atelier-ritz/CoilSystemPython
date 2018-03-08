@@ -149,7 +149,7 @@ class GUI(QMainWindow,Ui_MainWindow):
 
     # vision tab
     def on_chb_bypassFilters(self,state):
-        vision.setStateFiltersBypass(state)
+        vision.setStateFiltersBypassed(state)
 
     def on_chb_startPauseCapture(self,state):
         vision.setStateUpdate(state)
