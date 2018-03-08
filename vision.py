@@ -99,7 +99,7 @@ class Vision(object):
 
     def setStateObjectDetection(self,state,algorithm):
         self._isObjectDetection = state
-        self._detectionAlgorithmframeOriginal = algorithm
+        self._detectionAlgorithm = algorithm
 
     #==============================================================================================
     # <Filters>
