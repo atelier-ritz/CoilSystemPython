@@ -20,7 +20,7 @@ class Vision(object):
         self._guid = guid
         self._isUpdating = True
         self._isFilterBypassed = True
-        self._isObjectDetection = False
+        self._isObjectDetectionRunning = False
         self._detectionAlgorithm = ''
         self.filterRouting = [] # data structure: {"filterName", "args"}, defined in the editor
         # define the agents that you want to detect with objectDetection algorithm
@@ -59,7 +59,7 @@ class Vision(object):
                     frameFiltered = self.processFilters(frameOriginal.copy())
                 else:
                     frameFiltered = frameOriginal
-                if self.isObjectDetection():
+                if self.isObjectDetectionRunning():
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
@@ -72,7 +72,7 @@ class Vision(object):
                     frameFiltered = self.processFilters(frameOriginal.copy())
                 else:
                     frameFiltered = frameOriginal
-                if self.isObjectDetection():
+                if self.isObjectDetectionRunning():
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
@@ -93,8 +93,8 @@ class Vision(object):
     def isFilterBypassed(self):
         return self._isFilterBypassed
     
-    def isObjectDetection(self):
-        return self._isObjectDetection
+    def isObjectDetectionRunning(self):
+        return self._isObjectDetectionRunning
     
     #==============================================================================================
     # set instance attributes
@@ -106,7 +106,7 @@ class Vision(object):
         self._isFilterBypassed = state
 
     def setStateObjectDetection(self,state,algorithm):
-        self._isObjectDetection = state
+        self._isObjectDetectionRunning = state
         self._detectionAlgorithm = algorithm
 
     #==============================================================================================
