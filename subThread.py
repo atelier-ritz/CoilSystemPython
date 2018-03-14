@@ -25,6 +25,10 @@ class SubThread(QThread):
                         'rotateXZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'cutting_oni': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
+        self.defaultValOnGui = {
+                        'twistField': [0,0,0,0,0],
+                        'default':[0,0,0,0,0]
+                        }
         self.minOnGui = {'twistField': [-100,0,-1080,0,0],
                         'rotateXY': [-100,0,0,0,0],
                         'rotateYZ': [-100,0,0,0,0],
