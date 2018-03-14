@@ -168,12 +168,14 @@ class GUI(QMainWindow,Ui_MainWindow):
         labelNames = self.thrd.labelOnGui.get(subThreadName,self.thrd.labelOnGui['default'])
         minVals = self.thrd.minOnGui.get(subThreadName,self.thrd.minOnGui['default'])
         maxVals = self.thrd.maxOnGui.get(subThreadName,self.thrd.maxOnGui['default'])
+        defaultVals = self.thrd.defaultValOnGui.get(subThreadName,self.thrd.defaultValOnGui['default'])
         for i in range(5):
             targetLabel = 'lbl_subThreadParam' + str(i)
             targetSpinbox = 'dsb_subThreadParam' + str(i)
             getattr(self,targetLabel).setText(labelNames[i])
             getattr(self,targetSpinbox).setMinimum(minVals[i])
             getattr(self,targetSpinbox).setMaximum(maxVals[i])
+            getattr(self,targetSpinbox).setValue(defaultVals[i])
 
 
     def on_chb_startStopSubthread(self,state):
