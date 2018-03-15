@@ -4,9 +4,11 @@ A Python3-based program for the coil system
 
 ## Usage
 
-open terminal and cd to the target directory
+open terminal and cd to the target directory and run
 
+```
 python3 main.py
+```
 
 ## Program Structure
 To have a better understanding of the program, I would recommend you first have a look at "fieldManager.py".
@@ -37,15 +39,22 @@ callbacks.py
 └───subthread.py [run multithreading tasks]
 
 ```
-## To enable/disable 2nd camera
+## To enable/disable 2nd camera; Switch to USB camera
 
 Go to callbacks.py and comment out line 19 
 
 ```
-vision2 = Vision(index=2,guid=2672909588927744,buffersize=10)
-
+vision2 = Vision(index=2,type='firewire',guid=2672909588927744,buffersize=10)
 ```
 Note: In this example program, all the filters and object detection algorithms apply to the 1st camera only.
+
+If you want to use a USB camera instead, change it to 
+
+```
+vision2 = Vision(index=2,type='usb',guid=XXXX,buffersize=XX)
+```
+
+"guid" and "buffersize" can be anything because they will not be used in USB camera mode.
 
 ## To create a new filter
 
@@ -61,11 +70,11 @@ Go to vision.py __init__() function. Add a class attribute of the object to be d
 
 Define your algorithm in objectDetection.py. Refer to algorithmA() as an Example.
 
-Go to processObjectDetection() and pass your agents to the algorithm you just created.
+Go to processObjectDetection() and pass your "agents" (instances of Agent Class) to the algorithm you just created.
 
-The x, y, and orientation (if applicable) are updated at 60 Hz (defined in setupTimer() in callbacks.py).
+The parameters (x, y, and orientation, if applicable) are updated at 60 Hz (defined in setupTimer() in callbacks.py).
 
-These calues can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
+These values can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
 
 ## Dependencies
 
