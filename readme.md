@@ -111,14 +111,16 @@ You might have some trouble dealing with the .webm format of the video. :P
 
 ## Joystick Controller (Mar 15, 2018, under testing)
 
-In the "With-Joystick" branch of this repository, we added a new module that enables the control of the magnetic field with a joystick controller. We did a test with a PS3 Dualshock controller connected via USB, but basically you should be able to work with any controller. (Try using "lsusb" command and "dmesg" command in the terminal to see if the controller is detected.) 
+In the "With-Joystick" branch of this repository, we added a new module that enables the control of the magnetic field with a joystick controller. 
 
-The available input for a PS3 controllers are 6 axis input (ranges from -1 to +1. L/R joyStick and L2/R2 buttons) and 16 on/off inputs (L1 R1 Start Select Square Circle Triangle Cross) The basic changes are as follows:
+Although We only tested a PS3 Dualshock controller connected via USB, you should be able to work with any controller. (Try using "lsusb" command and "dmesg" command in the terminal to see if the controller is detected.) 
+
+The available input for a PS3 controllers are 6 axis input (ranges from -1 to +1. L/R joyStick and L2/R2 buttons) and 16 on/off inputs (L1 R1 Start Select Square Circle Triangle Cross) Some changes are made to the code as follows:
 ```
-* Callbacks.py 
+Callbacks.py 
      * Added an instance of "DualShock" class
      * This instance is passed to the subthread module
      * In "update()" the input from the controller is updated. This means the input is updated at 60 Hz.
-*  Subthread.py
+Subthread.py
      * In a subthread, the input can be obtained via functions defined in "PS3Controller.py". See the comments in the file.
 ```
