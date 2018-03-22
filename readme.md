@@ -133,3 +133,13 @@ Callbacks.py
 Subthread.py
      * In a subthread, the input can be obtained via functions defined in "PS3Controller.py". See the comments in the file.
 ```
+
+## oscBetween function (Mar 22, 2018)
+
+Added oscBetween() function that can be used in "subthread.py".
+
+This function generates an oscillating value between a lowerbound and an upperbound.
+
+The following oscillation waveforms are available: sin, saw, sqaure, triangle.
+
+Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" function defined in "mathfx.py".
