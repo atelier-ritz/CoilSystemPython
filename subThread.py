@@ -96,6 +96,40 @@ class SubThread(QThread):
                 text_file.close()
                 return
 
+    def exampleOscBetween(self):
+        ''' oscBetween() in mathfx generates a periodical value easily'''
+        ''' oscBetween(currentTime,oscShape,frequency,lowerBound,upperBound) '''
+        ''' oscShape = 'saw','triangle','square','sin' '''
+
+        startTime = time.time()
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            
+            # Example 1: oscillate between -10 mT to 10 mT in X
+            fieldX = oscBetween(t,'triangle',params[0],-10,10)
+            self.field.setX(fieldX)
+            
+            # Example 2: apply a 10 mT field, switching between 0 deg and 30 deg in XY plane
+            magitude = 10
+            angle = oscBetween(t,'square',params[0],0,30)
+            fieldX = magnitude * cosd(angle)
+            fieldY = magnitude * sind(angle)
+            self.field.setX(fieldX)
+            self.field.setY(fieldY)
+
+            # Example 3: apply a 10 mT field, angle in XY plane = 0,1,2,...29,30,0,1,2,...
+            magitude = 10
+            angle = oscBetween(t,'saw',params[0],0,30)
+            fieldX = magnitude * cosd(angle)
+            fieldY = magnitude * sind(angle)
+            
+            self.field.setX(fieldX)
+            self.field.setY(fieldY)
+            self.field.setZ(fieldZ)
+            if self.stopped:
+                return
+
+
     def rotateXY(self):
         #=============================
         # reference params
