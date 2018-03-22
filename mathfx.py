@@ -6,11 +6,6 @@ def sind(val):
     return sin(radians(val))
 
 def oscBetween(currentTime,oscShape,frequency,lowerBound,upperBound,phaseOffset=0):
-    ''' returns lowerBound when currentTime = 0 '''
-    ''' phaseOffset = 0~1 '''
-    ''' 0 or 1: no phase offset '''
-    ''' 0.5: half period delay '''
-    ''' 0.25: quarter period delay'''
     """
     This is a function that returns a value that oscillates periodically between a lower and an upper bound.
     It always returns "lowerBound" when currentTime = 0
