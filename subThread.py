@@ -66,7 +66,7 @@ class SubThread(QThread):
     # Start defining your subthread from here
     #=========================================
     def twistField(self):
-        #======================d=======
+        #=============================
         # reference params
         # 0 'Frequency (Hz)'
         # 1 'Magniude (mT)'
@@ -100,7 +100,7 @@ class SubThread(QThread):
         """ 
         oscBetween() defined in mathfx returns a value that oscillates between the lower and upper bounds.
         oscBetween(currentTime,oscShape,frequency,lowerBound,upperBound,phaseOffset(optional)) 
-        oscShape = 'saw','triangle','square','sin' '''
+        oscShape = 'saw','triangle','square','sin'
         It returns the "lowerBound" when currentTime = 0
         """
         startTime = time.time()
