@@ -97,12 +97,17 @@ class SubThread(QThread):
                 return
 
     def exampleOscBetween(self):
+        
         """ 
         oscBetween() defined in mathfx returns a value that oscillates between the lower and upper bounds.
         oscBetween(currentTime,oscShape,frequency,lowerBound,upperBound,phaseOffset(optional)) 
         oscShape = 'saw','triangle','square','sin'
         It returns the "lowerBound" when currentTime = 0
         """
+        #=============================
+        # reference params
+        # 0 'Frequency (Hz)'
+        #=============================
         startTime = time.time()
         while True:
             t = time.time() - startTime # elapsed time (sec)
