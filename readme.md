@@ -143,3 +143,11 @@ This function generates an oscillating value between a lowerbound and an upperbo
 The following oscillation waveforms are available: sin, saw, sqaure, triangle.
 
 Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" function defined in "mathfx.py".
+
+## added real-time field preview window (Mar 23, 2018)
+
+Added a window for real time filed preview.
+
+Avaialble in the "With-PlotWindow" branch.
+
+Also added some examples in subthread.py.
