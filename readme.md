@@ -118,7 +118,7 @@ As a substitue, you can use green-recorder https://github.com/foss-project/green
 
 You might have some trouble dealing with the .webm format of the video. :P
 
-## Joystick Controller (Mar 15, 2018, under testing)
+## [Available in "With-Joystick" branch] Joystick Controller (Mar 15, 2018, under testing)
 
 In the "With-Joystick" branch of this repository, we added a new module that enables the control of the magnetic field with a joystick controller. 
 
@@ -144,7 +144,7 @@ The following oscillation waveforms are available: sin, saw, sqaure, triangle.
 
 Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" function defined in "mathfx.py".
 
-## added real-time field preview window (Mar 23, 2018)
+## [Available in "With-PlotWindow" branch] added real-time field preview window (Mar 23, 2018)
 
 Added a window for real time filed preview.
 
