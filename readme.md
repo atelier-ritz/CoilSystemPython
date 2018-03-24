@@ -102,7 +102,7 @@ http://www.sensoray.com/products/826.htm
 
 qt-designer is used.
 
-sudo apt-get install qt4-designer
+sudo apt-get install qttools5-dev-tools
 
 ## USB camera or Firewire Camera
 
