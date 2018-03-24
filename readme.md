@@ -37,6 +37,10 @@ callbacks.py
 │
 │
 └───subthread.py [run multithreading tasks]
+│
+└───realTimePlot.py [plot a real-time preview window of the magnetic field]
+│
+└───PS3Controller.py [enable joystick/controllers]
 
 ```
 ## To enable/disable 2nd camera; Switch to USB camera
