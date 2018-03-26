@@ -17,11 +17,12 @@ Contents
     1. [Camera](#camera)
     2. [Filters](#filters)
     3. [Object Detection](#object-detection)
-8. [Screen Recording](#Screen Recording)
-9. [マップオブジェクト - ホール](#マップオブジェクト---ホール)
-10. [マップスキル](#マップスキル-1)
-11. [タッチ操作による自動移動について](#タッチ操作による自動移動について)
-12. [ライセンス情報](#ライセンス情報)
+4. [New Features](#new-features)
+    1. [Joystick support - Mar 15, 2018](#joystick)
+    2. [Signal Generator - Mar 22, 2018](#signal-generator)
+    3. [Field Preview Window - Mar 24, 2018](#preview-window)
+
+Mar 15, 2018
 
 <!-- /TOC -->
 
@@ -82,7 +83,7 @@ As a substitue, you can use green-recorder https://github.com/foss-project/green
 
 You might have some trouble dealing with the .webm format of the video though. :P
 
-#### list all available firewire cameras
+#### Listing all available firewire cameras
 
 There is a sample program in Utilities folder that lists up the guid of all available firewire cameras.
 
@@ -173,17 +174,9 @@ The parameters (x, y, and orientation, if applicable) are updated at 60 Hz (defi
 
 These values can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
 
-## Screen Recording
+## New Features
 
- == I suggest using Ubuntu 16 rather than Ubuntu 17 for now ==
-
-Simplescreenrecorder doesn't work property because Ubuntu 17.10 rolles back to GNOME (it used Unity in previous versions).
-
-As a substitue, you can use green-recorder https://github.com/foss-project/green-recorder
-
-You might have some trouble dealing with the .webm format of the video. :P
-
-## [Available in "With-Joystick" branch] Joystick Controller (Mar 15, 2018, under testing)
+### Joystick
 
 In the "With-Joystick" branch of this repository, we added a new module that enables the control of the magnetic field with a joystick controller. 
 
@@ -199,7 +192,7 @@ Subthread.py
      * In a subthread, the input can be obtained via functions defined in "PS3Controller.py". See the comments in the file.
 ```
 
-## oscBetween function (Mar 22, 2018)
+## signal-generator
 
 Added oscBetween() function that can be used in "subthread.py".
 
@@ -209,10 +202,12 @@ The following oscillation waveforms are available: sin, saw, sqaure, triangle.
 
 Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" function defined in "mathfx.py".
 
-## [Available in "With-PlotWindow" branch] added real-time field preview window (Mar 23, 2018)
+## Preview Window
 
 Added a window for real time filed preview.
 
 Avaialble in the "With-PlotWindow" branch.
 
 Also added some examples in subthread.py.
+
+![Preview Window](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/previewwindow.gif)
