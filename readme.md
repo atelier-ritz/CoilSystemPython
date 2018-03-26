@@ -7,9 +7,12 @@ Contents
 
 <!-- TOC orderedList:true -->
 
-1. [Usage](#Usage)
-2. [Program Structure](#program_structure)
-3. [To enable/disable 2nd camera; Switch to USB camera](#To enable/disable 2nd camera; Switch to USB camera)
+1. [Usage](#usage)
+2. [Structure](#structure)
+3. [Vision](#vision)
+    1. [Camera](#camera)
+    2. [Filters](#filters)
+    3. [Object Detection](#object-detection)
 4. [To create a new filter](#To create a new filter)
 5. [To create a new object detection algorithm](#To create a new object detection algorithm)
 6. [Dependencies](#Dependencies)
@@ -31,7 +34,7 @@ open terminal and cd to the target directory and run
 python3 main.py
 ```
 
-## program_structure
+## Structure
 To have a better understanding of the program, I would recommend you first have a look at "fieldManager.py".
 
 After that, open the GUI and "callbacks.py" to follow the signal flow and event handler (pyqtSlot).
@@ -64,7 +67,9 @@ callbacks.py
 └───PS3Controller.py [enable joystick/controllers]
 
 ```
-## To enable/disable 2nd camera; Switch to USB camera
+## Vision
+
+### Camera
 
 Go to callbacks.py and comment out line 19 
 
@@ -81,14 +86,13 @@ vision2 = Vision(index=2,type='usb',guid=XXXX,buffersize=XX)
 
 "guid" and "buffersize" can be anything because they will not be used in USB camera mode.
 
-## To create a new filter
+### Filters
 
 Go to filterlib.py and define your filter. E.g. myfilter(param1,param2,...)
 
 Then you can directly use it in the GUI by typing "myfilter(param1, param2,...)"
 
-## To create a new object detection algorithm
-
+### Object Detection
 Go to GUI and add the name of your algorithm in algorithm combobox.
 
 Go to vision.py __init__() function. Add a class attribute of the object to be detected. For example, self.gripper = Agent(), self.cargo = Agent()
