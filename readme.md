@@ -223,7 +223,7 @@ Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" fun
 
 ## Preview Window
 
-Added a window for real time filed preview.
+Added a window for real time preview of magnetic fields.
 
 Available in the "With-PlotWindow" branch.
 
