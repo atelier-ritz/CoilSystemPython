@@ -2,6 +2,10 @@
 
 A Python3-based program for the coil system
 
+## Features
+Markup : 
+* Bullet list
+            
 Contents
 --------------------
 
