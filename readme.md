@@ -178,6 +178,9 @@ Go to filterlib.py and define your filter. E.g. myfilter(param1,param2,...)
 Then you can directly use it in the GUI by typing "myfilter(param1, param2,...)"
 
 ### Object Detection
+
+![Object Detection](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/objectdetection.png)
+
 Go to GUI and add the name of your algorithm in algorithm combobox.
 
 Go to vision.py __init__() function. Add a class attribute of the object to be detected. For example, self.gripper = Agent(), self.cargo = Agent()
