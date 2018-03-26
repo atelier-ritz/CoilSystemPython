@@ -8,7 +8,7 @@ Contents
 <!-- TOC orderedList:true -->
 
 1. [Usage](#Usage)
-2. [Program Structure](#Program Structure)
+2. [Program Structure](#program_structure)
 3. [To enable/disable 2nd camera; Switch to USB camera](#To enable/disable 2nd camera; Switch to USB camera)
 4. [To create a new filter](#To create a new filter)
 5. [To create a new object detection algorithm](#To create a new object detection algorithm)
@@ -31,7 +31,7 @@ open terminal and cd to the target directory and run
 python3 main.py
 ```
 
-## Program Structure
+## program_structure
 To have a better understanding of the program, I would recommend you first have a look at "fieldManager.py".
 
 After that, open the GUI and "callbacks.py" to follow the signal flow and event handler (pyqtSlot).
