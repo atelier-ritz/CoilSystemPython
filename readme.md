@@ -102,6 +102,7 @@ Download "Linux Software Development Kit" and follow the instructions in Readme.
 
 http://www.sensoray.com/products/826.htm
 
+5. General python packages such as matplotlib and numpy
 ## GUI Designer
 
 qt-designer is used.
