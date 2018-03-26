@@ -3,7 +3,7 @@
 A Python3-based program for the coil system. Ported from C code.
 
 ## Features
-* Control the electromagnetic coils vias s826 PCI I/O board.
+* Control the electromagnetic coils via s826 PCI I/O board.
 * Realtime vision feedback from firewire/USB cameras.
 * Filtering and pre-processing of the images.
 * Object detection algorithm.
@@ -85,9 +85,9 @@ python3 main.py
 
 #### Screen Recording
 
-SimpleScreenRecorder doesn't work property in Ubuntu 17 because it rolles back to GNOME (it used Unity in previous versions).
+SimpleScreenRecorder doesn't work property in Ubuntu 17 because it rolls back to GNOME (it used Unity in previous versions).
 
-As a substitue, you can use green-recorder https://github.com/foss-project/green-recorder
+As a substitute, you can use green-recorder https://github.com/foss-project/green-recorder
 
 You might have some trouble dealing with the .webm format of the video though. :P
 
@@ -133,6 +133,7 @@ callbacks.py
 ### Camera
 
 #### Important (If you are using firewire cameras)
+
 Important: The program freezes if you have a wrong camera setting.
 
 Run the firewire camera manager in coriander:
@@ -147,7 +148,7 @@ If you want to have a higher fps, you need to increase the buffersize when initi
 
 #### Supported Cameras
 
-Both USB camera (including the webcamera on your laptop) and Firewire cameras are supported.
+Both USB camera (including the webcam on your laptop) and Firewire cameras are supported.
 
 You can enable/disable the second camera by commenting out the following line in "callbacks.py": 
 
@@ -216,7 +217,7 @@ Added oscBetween() function that can be used in "subthread.py".
 
 This function generates an oscillating value between a lowerbound and an upperbound.
 
-The following oscillation waveforms are available: sin, saw, sqaure, triangle.
+The following oscillation waveforms are available: sin, saw, square, triangle.
 
 Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" function defined in "mathfx.py".
 
@@ -224,7 +225,7 @@ Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" fun
 
 Added a window for real time filed preview.
 
-Avaialble in the "With-PlotWindow" branch.
+Available in the "With-PlotWindow" branch.
 
 Also added some examples in subthread.py.
 
