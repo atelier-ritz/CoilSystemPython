@@ -179,7 +179,7 @@ Then you can directly use it in the GUI by typing "myfilter(param1, param2,...)"
 
 ### Object Detection
 
-![Object Detection](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/objectdetection.png)
+![Object Detection](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/object_detection.png)
 
 Go to GUI and add the name of your algorithm in algorithm combobox.
 
