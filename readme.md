@@ -1,10 +1,16 @@
 # CoilSystemPython
 
-A Python3-based program for the coil system
+A Python3-based program for the coil system. Ported from C code.
 
 ## Features
-Markup : 
-* Bullet list
+* Control the electromagnetic coils vias s826 PCI I/O board.
+* Realtime vision feedback from firewire/USB cameras.
+* Filtering and pre-processing of the images.
+* Object detection algorithm.
+* Qt5-based GUI, which allows easy customization.
+* Multithreading module for controlling multiple agents according to the feedback data from the cameras.
+* Preview window (60 Hz) for the X, Y, and Z magnetic field.
+* Controlling the magnetic field with a Joystick controller.
             
 Contents
 --------------------
