@@ -11,15 +11,12 @@ Contents
 1. [Usage](#usage)
     1. [Installation](#installation)
     2. [How to run](#how-to-run)
+    3. [Utilities](#utilities)
 2. [Structure](#structure)
 3. [Vision](#vision)
     1. [Camera](#camera)
     2. [Filters](#filters)
     3. [Object Detection](#object-detection)
-4. [To create a new filter](#To create a new filter)
-5. [To create a new object detection algorithm](#To create a new object detection algorithm)
-6. [Dependencies](#Dependencies)
-7. [GUI Designer](#GUI Designer)
 8. [Screen Recording](#Screen Recording)
 9. [マップオブジェクト - ホール](#マップオブジェクト---ホール)
 10. [マップスキル](#マップスキル-1)
@@ -61,6 +58,12 @@ http://www.sensoray.com/products/826.htm
 
 5. General python packages such as matplotlib and numpy
 
+6. "qt-designer" is used for designing the GUI of the program.
+
+```
+sudo apt-get install qttools5-dev-tools
+```
+
 ### How to run
 
 open terminal and cd to the target directory and run
@@ -68,6 +71,20 @@ open terminal and cd to the target directory and run
 ```
 python3 main.py
 ```
+
+### Utilities
+
+#### Screen Recording
+
+SimpleScreenRecorder doesn't work property in Ubuntu 17 because it rolles back to GNOME (it used Unity in previous versions).
+
+As a substitue, you can use green-recorder https://github.com/foss-project/green-recorder
+
+You might have some trouble dealing with the .webm format of the video though. :P
+
+#### list all available firewire cameras
+
+There is a sample program in Utilities folder that lists up the guid of all available firewire cameras.
 
 ## Structure
 To have a better understanding of the program, I would recommend you first have a look at "fieldManager.py".
@@ -106,11 +123,27 @@ callbacks.py
 
 ### Camera
 
-Go to callbacks.py and comment out line 19 
+#### Important (If you are using firewire cameras)
+Important: If the program freezes when you launch it, it is probably because of th wrong setting of the cameras.
+
+Run the firewire camera manager in coriander:
+
+```
+coriander
+```
+
+Please select "Y8 mono 8pp, 30fps" for both cameras.
+
+#### Supported Cameras
+
+Both USB camera (including the webcamera on your laptop) and Firewire cameras are supported.
+
+You can enable/disable the second camera by commenting out the following line in "callbacks.py": 
 
 ```
 vision2 = Vision(index=2,type='firewire',guid=2672909588927744,buffersize=10)
 ```
+
 Note: In this example program, all the filters and object detection algorithms apply to the 1st camera only.
 
 If you want to use a USB camera instead, change it to 
@@ -139,16 +172,6 @@ Go to processObjectDetection() and pass your "agents" (instances of Agent Class)
 The parameters (x, y, and orientation, if applicable) are updated at 60 Hz (defined in setupTimer() in callbacks.py).
 
 These values can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
-
-## GUI Designer
-
-qt-designer is used.
-
-sudo apt-get install qttools5-dev-tools
-
-## USB camera or Firewire Camera
-
-Can specify the camera in vision.py
 
 ## Screen Recording
 
