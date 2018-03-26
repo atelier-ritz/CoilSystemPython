@@ -7,7 +7,10 @@ Contents
 
 <!-- TOC orderedList:true -->
 
+
 1. [Usage](#usage)
+    1. [Installation](#installation)
+    2. [How to run](#how-to-run)
 2. [Structure](#structure)
 3. [Vision](#vision)
     1. [Camera](#camera)
@@ -27,6 +30,38 @@ Contents
 
 
 ## Usage
+
+### Installation
+
+This program relies on the following dependencies:
+
+1. opencv
+
+```
+pip3 install opencv-python
+
+pip3 install opencv-contrib-python
+```
+
+2. pyqt5
+
+```
+pip3 install pyqt5
+```
+
+3. pydc1394
+
+https://github.com/jordens/pydc1394
+
+4. s826Driver
+
+Download "Linux Software Development Kit" and follow the instructions in Readme.
+
+http://www.sensoray.com/products/826.htm
+
+5. General python packages such as matplotlib and numpy
+
+### How to run
 
 open terminal and cd to the target directory and run
 
@@ -105,29 +140,6 @@ The parameters (x, y, and orientation, if applicable) are updated at 60 Hz (defi
 
 These values can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
 
-## Dependencies
-
-1. opencv
-
-pip3 install opencv-python
-
-pip3 install opencv-contrib-python
-
-2. pyqt5
-
-pip3 install pyqt5
-
-3. pydc1394
-
-https://github.com/jordens/pydc1394
-
-4. s826Driver
-
-Download "Linux Software Development Kit" and follow the instructions in Readme.
-
-http://www.sensoray.com/products/826.htm
-
-5. General python packages such as matplotlib and numpy
 ## GUI Designer
 
 qt-designer is used.
