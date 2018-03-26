@@ -32,8 +32,6 @@ Contents
     2. [Signal Generator - Mar 22, 2018](#signal-generator)
     3. [Field Preview Window - Mar 24, 2018](#preview-window)
 
-Mar 15, 2018
-
 <!-- /TOC -->
 
 
@@ -185,6 +183,14 @@ The parameters (x, y, and orientation, if applicable) are updated at 60 Hz (defi
 These values can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
 
 ## New Features
+
+In order to make the code neat and clean, I have three versions of the code in my repository.
+
+master: basic modules only
+
+with-Joystick: basic modules + joystick support
+
+with-PlotWindow: basic modules + preview window
 
 ### Joystick
 
