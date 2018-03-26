@@ -133,7 +133,7 @@ callbacks.py
 ### Camera
 
 #### Important (If you are using firewire cameras)
-Important: If the program freezes when you launch it, it is probably because of th wrong setting of the cameras.
+Important: The program freezes if you have a wrong camera setting.
 
 Run the firewire camera manager in coriander:
 
@@ -142,6 +142,8 @@ coriander
 ```
 
 Please select "Y8 mono 8pp, 30fps" for both cameras.
+
+If you want to have a higher fps, you need to increase the buffersize when initializing the instance of Camera class in "callbacks.py".
 
 #### Supported Cameras
 
