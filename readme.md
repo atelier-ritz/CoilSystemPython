@@ -134,6 +134,8 @@ callbacks.py
 
 #### Important (If you are using firewire cameras)
 
+![Camera error](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/camera_seting_error.png)
+
 Important: The program freezes if you have a wrong camera setting.
 
 Run the firewire camera manager in coriander:
