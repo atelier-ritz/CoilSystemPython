@@ -23,7 +23,10 @@ class SubThread(QThread):
                         'rotateXY': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'rotateYZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'rotateXZ': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
-                        'cutting_oni': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
+                        'oscX_saw': ['Frequency (Hz)','bound1 (mT)','bound2 (mT)','N/A','N/A'],
+                        'oscX_triangle': ['Frequency (Hz)','bound1 (mT)','bound2 (mT)','N/A','N/A'],
+                        'oscX_square': ['Frequency (Hz)','bound1 (mT)','bound2 (mT)','N/A','N/A'],
+                        'oscX_sin': ['Frequency (Hz)','bound1 (mT)','bound2 (mT)','N/A','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
         self.defaultValOnGui = {
                         'twistField': [0,0,0,0,0],
@@ -33,13 +36,19 @@ class SubThread(QThread):
                         'rotateXY': [-100,0,0,0,0],
                         'rotateYZ': [-100,0,0,0,0],
                         'rotateXZ': [-100,0,0,0,0],
-                        'cutting_oni': [-30,-14,0,0,0],
+                        'oscX_saw': [-100,-14,-14,0,0],
+                        'oscX_triangle': [-100,-14,-14,0,0],
+                        'oscX_square': [-100,-14,-14,0,0],
+                        'oscX_sin': [-100,-14,-14,0,0],
                         'default':[0,0,0,0,0]}
         self.maxOnGui = {'twistField': [100,14,1080,180,360],
                         'rotateXY': [100,14,0,0,0],
                         'rotateYZ': [100,14,0,0,0],
                         'rotateXZ': [100,14,0,0,0],
-                        'cutting_oni': [30,14,0,0,0],
+                        'oscX_saw': [100,14,14,0,0],
+                        'oscX_triangle': [100,14,14,0,0],
+                        'oscX_square': [100,14,14,0,0],
+                        'oscX_sin': [100,14,14,0,0],
                         'default':[0,0,0,0,0]}
 
     def setup(self,subThreadName):
@@ -66,6 +75,7 @@ class SubThread(QThread):
     # Start defining your subthread from here
     #=========================================
     def twistField(self):
+        ''' credit to Omid '''
         #=============================
         # reference params
         # 0 'Frequency (Hz)'
@@ -96,46 +106,73 @@ class SubThread(QThread):
                 text_file.close()
                 return
 
-    def exampleOscBetween(self):
-        
-        """ 
-        oscBetween() defined in mathfx returns a value that oscillates between the lower and upper bounds.
-        oscBetween(currentTime,oscShape,frequency,lowerBound,upperBound,phaseOffset(optional)) 
-        oscShape = 'saw','triangle','square','sin'
-        It returns the "lowerBound" when currentTime = 0
-        """
+    def oscX_saw(self):
         #=============================
         # reference params
         # 0 'Frequency (Hz)'
+        # 1 'Lowerbound (mT)'
+        # 2 'Upperbound (mT)'
         #=============================
         startTime = time.time()
         while True:
             t = time.time() - startTime # elapsed time (sec)
-            
-            # Example 1: oscillate between -10 mT to 10 mT in X
-            fieldX = oscBetween(t,'triangle',params[0],-10,10)
+            fieldX = oscBetween(t,'saw',self.params[0],self.params[1],self.params[2])
             self.field.setX(fieldX)
-            
-            # Example 2: apply a 10 mT field, switching between 0 deg and 30 deg in XY plane
-            magitude = 10
-            angle = oscBetween(t,'square',params[0],0,30)
-            fieldX = magnitude * cosd(angle)
-            fieldY = magnitude * sind(angle)
-            self.field.setX(fieldX)
-            self.field.setY(fieldY)
-
-            # Example 3: apply a 10 mT field, angle in XY plane = 0,1,2,...29,30,0,1,2,...
-            magitude = 10
-            angle = oscBetween(t,'saw',params[0],0,30)
-            fieldX = magnitude * cosd(angle)
-            fieldY = magnitude * sind(angle)
-            
-            self.field.setX(fieldX)
-            self.field.setY(fieldY)
-            self.field.setZ(fieldZ)
+            self.field.setY(0)
+            self.field.setZ(0)
             if self.stopped:
                 return
 
+    def oscX_triangle(self):
+        #=============================
+        # reference params
+        # 0 'Frequency (Hz)'
+        # 1 'Lowerbound (mT)'
+        # 2 'Upperbound (mT)'
+        #=============================
+        startTime = time.time()
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            fieldX = oscBetween(t,'triangle',self.params[0],self.params[1],self.params[2])
+            self.field.setX(fieldX)
+            self.field.setY(0)
+            self.field.setZ(0)
+            if self.stopped:
+                return
+
+    def oscX_square(self):
+        #=============================
+        # reference params
+        # 0 'Frequency (Hz)'
+        # 1 'Lowerbound (mT)'
+        # 2 'Upperbound (mT)'
+        #=============================
+        startTime = time.time()
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            fieldX = oscBetween(t,'square',self.params[0],self.params[1],self.params[2])
+            self.field.setX(fieldX)
+            self.field.setY(0)
+            self.field.setZ(0)
+            if self.stopped:
+                return
+
+    def oscX_sin(self):
+        #=============================
+        # reference params
+        # 0 'Frequency (Hz)'
+        # 1 'Lowerbound (mT)'
+        # 2 'Upperbound (mT)'
+        #=============================
+        startTime = time.time()
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            fieldX = oscBetween(t,'sin',self.params[0],self.params[1],self.params[2])
+            self.field.setX(fieldX)
+            self.field.setY(0)
+            self.field.setZ(0)
+            if self.stopped:
+                return
 
     def rotateXY(self):
         #=============================
@@ -151,6 +188,25 @@ class SubThread(QThread):
             fieldY = self.params[1] * sin(theta)
             self.field.setX(fieldX)
             self.field.setY(fieldY)
+            self.field.setZ(0)
+            if self.stopped:
+                return
+
+    def rotateYZ(self):
+        #=============================
+        # reference params
+        # 0 'Frequency (Hz)'
+        # 1 'Magniude (mT)'
+        #=============================
+        startTime = time.time()
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            theta = 2 * pi * self.params[0] * t
+            fieldY = self.params[1] * cos(theta)
+            fieldZ = self.params[1] * sin(theta)
+            self.field.setX(0)
+            self.field.setY(fieldY)
+            self.field.setZ(fieldZ)
             if self.stopped:
                 return
 
@@ -167,21 +223,7 @@ class SubThread(QThread):
             fieldX = self.params[1] * cos(theta)
             fieldZ = self.params[1] * sin(theta)
             self.field.setX(fieldX)
-            self.field.setZ(fieldZ)
-            if self.stopped:
-                return
-
-    def cutting_oni(self):
-        #=============================
-        # reference params
-        # 0 'Frequency (Hz)'
-        # 1 'Magniude (mT)'
-        #=============================
-        startTime = time.time()
-        while True:
-            t = time.time() - startTime # elapsed time (sec)
-            theta = 2 * pi * self.params[0] * t
-            fieldZ = self.params[1] * abs(sin(theta))
+            self.field.setY(0)
             self.field.setZ(fieldZ)
             if self.stopped:
                 return

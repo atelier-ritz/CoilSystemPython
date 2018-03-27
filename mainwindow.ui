@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>mainwindow</class>
+ <widget class="QMainWindow" name="mainwindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>722</width>
-    <height>439</height>
+    <width>729</width>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -296,7 +296,7 @@
       <x>10</x>
       <y>190</y>
       <width>341</width>
-      <height>201</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="title">
@@ -308,7 +308,7 @@
        <x>10</x>
        <y>30</y>
        <width>321</width>
-       <height>75</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="html">
@@ -316,17 +316,14 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;//Please see &amp;quot;filterlib.py&amp;quot; for a list of examples. This editor is for debug purposes.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;//e.g. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;//grey(0)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;//canny(12,240)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btn_refreshFilterRouting">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>110</y>
+       <y>130</y>
        <width>121</width>
        <height>31</height>
       </rect>
@@ -339,7 +336,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>113</y>
+       <y>130</y>
        <width>146</width>
        <height>22</height>
       </rect>
@@ -371,7 +368,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>140</y>
+       <y>160</y>
        <width>301</width>
        <height>20</height>
       </rect>
@@ -384,7 +381,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>160</y>
+       <y>180</y>
        <width>146</width>
        <height>22</height>
       </rect>
@@ -400,7 +397,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>160</y>
+       <y>180</y>
        <width>121</width>
        <height>27</height>
       </rect>
@@ -428,7 +425,7 @@ p, li { white-space: pre-wrap; }
       <x>360</x>
       <y>10</y>
       <width>351</width>
-      <height>371</height>
+      <height>401</height>
      </rect>
     </property>
     <property name="title">
@@ -463,11 +460,6 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <property name="text">
-       <string>cutting_oni</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>twistField</string>
       </property>
      </item>
@@ -484,6 +476,26 @@ p, li { white-space: pre-wrap; }
      <item>
       <property name="text">
        <string>rotateYZ</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>oscX_saw</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>oscX_triangle</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>oscX_square</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>oscX_sin</string>
       </property>
      </item>
     </widget>
@@ -619,9 +631,63 @@ p, li { white-space: pre-wrap; }
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>230</y>
+       <width>321</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="LAYOUT_A">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_plot">
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>This space is for real-time plot of XYZ field.</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::PlainText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;X: blue, Y: green, Z: red&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;updating at 60 Hz&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::RichText</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QPushButton" name="btn_zoom">
+            <property name="text">
+             <string>Zoom In/Out Y Axis</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
     <zorder>layoutWidget</zorder>
     <zorder>chb_startStopSubthread</zorder>
     <zorder>cbb_subThread</zorder>
+    <zorder>gridLayoutWidget</zorder>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -629,8 +695,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>722</width>
-     <height>25</height>
+     <width>729</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>
