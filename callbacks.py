@@ -5,6 +5,8 @@ from fieldManager import FieldManager
 from vision import Vision
 from s826 import S826
 from subThread import SubThread
+from realTimePlot import CustomFigCanvas
+import threading
 import syntax
 #=========================================================
 # UI Config
@@ -26,9 +28,11 @@ class GUI(QMainWindow,Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self,None,Qt.WindowStaysOnTopHint)
         Ui_MainWindow.__init__(self)
+        self.updateRate = 15 # (ms) update rate of the GUI, vision, plot
         self.setupUi(self)
         self.setupTimer()
         self.setupSubThread(field,vision)
+        self.setupRealTimePlot()
         self.connectSignals()
         self.linkWidgets()
 
@@ -46,10 +50,11 @@ class GUI(QMainWindow,Ui_MainWindow):
     def setupTimer(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
-        self.timer.start(15) # msec
+        self.timer.start(self.updateRate) # msec
 
     def update(self):
         vision.updateFrame()
+        self.updatePlot()
         try:
             vision2
         except NameError:
@@ -84,6 +89,8 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.dsb_subThreadParam2.valueChanged.connect(self.thrd.setParam2)
         self.dsb_subThreadParam3.valueChanged.connect(self.thrd.setParam3)
         self.dsb_subThreadParam4.valueChanged.connect(self.thrd.setParam4)
+        # plot
+        self.btn_zoom.clicked.connect(self.realTimePlot.zoom)
 
     #=====================================================
     # Link GUI elements
@@ -123,6 +130,20 @@ class GUI(QMainWindow,Ui_MainWindow):
         print('Subthread is terminated.')
         self.clearField()
         # disable some buttons etc.
+
+    #=====================================================
+    # Real time plot
+    # This is showing actual coil current that is stored in field.x, field.y, field.z
+    # Note: the figure is updating at the speed of self.updateRate defined in _init_
+    #=====================================================
+    def setupRealTimePlot(self):
+        self.realTimePlot = CustomFigCanvas()
+        self.LAYOUT_A.addWidget(self.realTimePlot, *(0,0))
+
+    def updatePlot(self):
+        self.realTimePlot.addDataX(field.x)
+        self.realTimePlot.addDataY(field.y)
+        self.realTimePlot.addDataZ(field.z)
 
     #=====================================================
     # Callback Functions
