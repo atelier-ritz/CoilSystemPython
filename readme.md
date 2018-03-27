@@ -201,8 +201,6 @@ master: basic modules only
 
 with-Joystick: basic modules + joystick support
 
-with-PlotWindow: basic modules + preview window
-
 ### Joystick
 
 In the "With-Joystick" branch of this repository, we added a new module that enables the control of the magnetic field with a joystick controller. 
@@ -232,8 +230,6 @@ Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" fun
 ## Preview Window
 
 Added a window for real time preview of magnetic fields.
-
-Available in the "With-PlotWindow" branch.
 
 Also added some examples in subthread.py.
 
