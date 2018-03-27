@@ -32,7 +32,7 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.setupUi(self)
         self.setupTimer()
         self.setupSubThread(field,vision)
-        self.setupRealTimePlot()
+        self.setupRealTimePlot() # comment ou this line if you don't want a preview window
         self.connectSignals()
         self.linkWidgets()
 
@@ -54,13 +54,18 @@ class GUI(QMainWindow,Ui_MainWindow):
 
     def update(self):
         vision.updateFrame()
-        self.updatePlot()
         try:
             vision2
         except NameError:
             pass
         else:
             vision2.updateFrame()
+        try:
+            self.realTimePlot
+        except AttributeError:
+            pass
+        else:
+            self.updatePlot()
 
     #=====================================================
     # Connect buttons etc. of the GUI to callback functions
@@ -89,8 +94,7 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.dsb_subThreadParam2.valueChanged.connect(self.thrd.setParam2)
         self.dsb_subThreadParam3.valueChanged.connect(self.thrd.setParam3)
         self.dsb_subThreadParam4.valueChanged.connect(self.thrd.setParam4)
-        # plot
-        self.btn_zoom.clicked.connect(self.realTimePlot.zoom)
+
 
     #=====================================================
     # Link GUI elements
@@ -138,7 +142,8 @@ class GUI(QMainWindow,Ui_MainWindow):
     #=====================================================
     def setupRealTimePlot(self):
         self.realTimePlot = CustomFigCanvas()
-        self.LAYOUT_A.addWidget(self.realTimePlot, *(0,0))
+        self.LAYOUT_A.addWidget(self.realTimePlot, *(0,0)) # put the preview window in the layout
+        self.btn_zoom.clicked.connect(self.realTimePlot.zoom) # connect qt signal to zoom funcion
 
     def updatePlot(self):
         self.realTimePlot.addDataX(field.x)
