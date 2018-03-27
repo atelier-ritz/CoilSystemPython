@@ -6,7 +6,6 @@ from vision import Vision
 from s826 import S826
 from subThread import SubThread
 from realTimePlot import CustomFigCanvas
-import threading
 import syntax
 #=========================================================
 # UI Config
