@@ -191,7 +191,7 @@ Go to processObjectDetection() and pass your "agents" (instances of Agent Class)
 
 The parameters (x, y, and orientation, if applicable) are updated at 60 Hz (defined in setupTimer() in callbacks.py).
 
-These values can be accessed in the subthread.py by using self.vision.gripper.x, self.vision.gripper.y, and self.vision.gripper.orientation.
+These values can be accessed in the subthread.py by using self.vision.<nameOfYourAgent>.x, self.vision.<nameOfYourAgent>.y, and self.vision.<nameOfYourAgent>.orientation.
 
 ## New Features
 
