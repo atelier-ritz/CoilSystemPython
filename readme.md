@@ -39,6 +39,12 @@ Contents
 
 ### Installation
 
+New(Apr 6, 2018): Omidy made a "autoInstall.sh" that install all packages automatically.
+
+```
+1. Put "" 
+```
+
 This program relies on the following dependencies:
 
 1. opencv
