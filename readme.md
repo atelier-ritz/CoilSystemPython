@@ -39,7 +39,7 @@ Contents
 
 ### Installation
 
-New(Apr 6, 2018): Omidy made a "autoInstall.sh" that install all packages automatically. If you decide to use this method, you don't need to install the dependency packages manually.
+New(Apr 6, 2018): Updated "autoInstall.sh" that helps install all packages automatically. Many thanks to Omidy. The file can be found in "utilities". 
 
 ```
 1. Download "autoInstall.sh" to your local folder.
