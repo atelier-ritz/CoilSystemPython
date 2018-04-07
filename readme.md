@@ -39,10 +39,14 @@ Contents
 
 ### Installation
 
-New(Apr 6, 2018): Omidy made a "autoInstall.sh" that install all packages automatically.
+New(Apr 6, 2018): Omidy made a "autoInstall.sh" that install all packages automatically. If you decide to use this method, you don't need to install the dependency packages manually.
 
 ```
-1. Put "" 
+1. Download "autoInstall.sh" to your local folder.
+
+2. Download "s826 linux driver" (http://www.sensoray.com/PCI_Express_digital_output_826.htm) and "pydc139" (https://github.com/jordens/pydc1394). Name the extracted folders as "s826" and "pydc1394". Put them in the same directory as "autoInstall.sh".
+
+3. Open terminal in the current directory and run command "sudo ./autoInstall.sh".
 ```
 
 This program relies on the following dependencies:
