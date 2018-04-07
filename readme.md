@@ -49,7 +49,7 @@ New(Apr 6, 2018): Updated "autoInstall.sh" that helps install all packages autom
 3. Open terminal in the current directory and run command "sudo ./autoInstall.sh".
 ```
 
-This program relies on the following dependencies:
+This bash file installs all the following dependencies:
 
 1. opencv
 
