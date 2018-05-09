@@ -7,6 +7,10 @@ def sind(val):
 
 def oscBetween(currentTime,oscShape,frequency,bound1,bound2,phaseOffset=0):
     """
+          /\    /\    /\     < ‾ ‾ ‾ upperbound
+         /  \  /  \  /  \
+        /    \/    \/    \   < _ _ _ lowerbound
+
     This is a function that returns a value that oscillates periodically between a lower and an upper bound.
     It always returns "lowerBound" when currentTime = 0
     @param currentTime: elapsed time (s), the x-axis variable of the periodical function
@@ -34,3 +38,12 @@ def oscBetween(currentTime,oscShape,frequency,bound1,bound2,phaseOffset=0):
         return lowerBound + abs((lowerBound-upperBound) + (time+0.5/frequency)*frequency*2*(upperBound-lowerBound) % (2*(upperBound-lowerBound)))
     else:
         return 0
+
+def normalizeTime(currentTime,frequency):
+    '''
+    This function converts the x-axis variable (time) of a periodic function to the normalized time, range: 0 - 1
+    '''
+    if frequency == 0: return 0
+    else:
+        period = 1/frequency
+        return currentTime % period / period

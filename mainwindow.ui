@@ -480,22 +480,37 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <property name="text">
-       <string>oscX_saw</string>
+       <string>osc_saw</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>oscX_triangle</string>
+       <string>osc_triangle</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>oscX_square</string>
+       <string>osc_square</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>oscX_sin</string>
+       <string>osc_sin</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>oni_cutting</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ellipse</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>examplePiecewiseFunction</string>
       </property>
      </item>
     </widget>

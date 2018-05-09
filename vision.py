@@ -86,16 +86,16 @@ class Vision(object):
 
     def isFireWire(self):
         return self._type.lower() == 'firewire'
-    
+
     def isUpdating(self):
         return self._isUpdating
-    
+
     def isFilterBypassed(self):
         return self._isFilterBypassed
-    
+
     def isObjectDetectionRunning(self):
         return self._isObjectDetectionRunning
-    
+
     #==============================================================================================
     # set instance attributes
     #==============================================================================================
