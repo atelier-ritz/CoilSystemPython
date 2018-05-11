@@ -29,7 +29,7 @@ class SubThread(QThread):
                         'osc_sin': ['Frequency (Hz)','bound1 (mT)','bound2 (mT)','Azimuth [0,360] (deg)','Polar [-90,90] (deg)'],
                         'oni_cutting': ['Frequency (Hz)','Magnitude (mT)','angleBound1 (deg)','angleBound2 (deg)','N/A'],
                         'examplePiecewiseFunction': ['Frequency (Hz)','Magnitude (mT)','angle (deg)','period1 (0-1)','period2 (0-1)'],
-                        'ellipse': ['Frequency (Hz)','Azimuthal Angle (deg)','B_horz (mT)','B_vert (mT)','B_side (mT)'],
+                        'ellipse': ['Frequency (Hz)','Azimuthal Angle (deg)','B_horzF (mT)','B_vert (mT)','B_horzB (mT)'],
                         'default':['param0','param1','param2','param3','param4']}
         self.defaultValOnGui = {
                         'twistField': [0,0,0,0,0],
@@ -44,7 +44,7 @@ class SubThread(QThread):
                         'osc_square': [-100,-20,-20,0,-90],
                         'osc_sin': [-100,-20,-20,0,-90],
                         'oni_cutting': [-100,-14,-720,-720,0],
-                        'ellipse': [-100,-720,0,0,-20],
+                        'ellipse': [-100,-720,0,0,0],
                         'examplePiecewiseFunction': [-20,0,-360,0,0],
                         'default':[0,0,0,0,0]}
         self.maxOnGui = {'twistField': [100,14,1080,180,360],
@@ -123,9 +123,9 @@ class SubThread(QThread):
         # reference params
         # 0 'Frequency (Hz)'
         # 1 'azimuth (deg)'
-        # 2 'B_horz (mT)'
+        # 2 'B_horzF (mT)'
         # 3 'B_vert (mT)'
-        # 4 'B_side (mT)'
+        # 4 'B_horzB (mT)'
         #=============================
         startTime = time.time()
         counter = 0
@@ -133,9 +133,13 @@ class SubThread(QThread):
         while True:
             t = time.time() - startTime # elapsed time (sec)
             theta = 2 * pi * self.params[0] * t
-            B_horz = self.params[2] * cos(theta)
-            fieldX = B_horz * cosd(self.params[1]) + self.params[4]*sind(self.params[1])
-            fieldY = B_horz * sind(self.params[1]) - self.params[4]*cosd(self.params[1])
+            normT = normalizeTime(t,self.params[0]) # 0 <= normT < 1
+            if normT < 0.5:
+                B_horz = self.params[2] * cos(theta)
+            else:
+                B_horz = self.params[4] * cos(theta)
+            fieldX = B_horz * cosd(self.params[1])
+            fieldY = B_horz * sind(self.params[1])
             fieldZ = self.params[3] * sin(theta)
             self.field.setX(fieldX)
             self.field.setY(fieldY)
