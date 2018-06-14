@@ -123,7 +123,7 @@ main.py
 
 callbacks.py
 │
-│   
+└───mathfx.py [some macros for maths] 
 └───syntax.py [highlight the keywords in GUI editor_vision]
 |
 └───fieldManager.py [send commands to s826; store XYZ field strength]
@@ -133,6 +133,7 @@ callbacks.py
 └───visoin.py [capture frames; apply filters; detect objects]
 │       │   filterlib.py [define filters]
 │       │   objectDetection.py [define object detection algorithms]
+|       |   drawing.py [allow users to draw line etc. in a subthread]
 │
 │
 └───subthread.py [run multithreading tasks]
