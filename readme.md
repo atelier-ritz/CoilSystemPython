@@ -31,6 +31,7 @@ Contents
     1. [Joystick support - Mar 15, 2018](#joystick)
     2. [Signal Generator - Mar 22, 2018](#signal-generator)
     3. [Field Preview Window - Mar 24, 2018](#preview-window)
+    4. [Drawing feature - Jun 14, 2018](#drawing)
 
 <!-- /TOC -->
 
@@ -244,3 +245,15 @@ Added a window for real time preview of magnetic fields.
 Also added some examples in subthread.py.
 
 ![Preview Window](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/previewwindow.gif)
+
+## Drawing
+
+In the old version, users can apply filters to the image, or highlight the object detected.
+
+However, it didn't allow users to draw lines and circles directly on the frames captured.
+
+This is necessary when, for example, users want to draw a vector pointing from the current robot position to the goal position.
+
+Please refer to the "swimmerPathFollowing" example and "drawing" example in subThread.py.
+
+
