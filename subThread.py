@@ -1,6 +1,6 @@
 import time
 from mathfx import *
-from math import pi, sin, cos
+from math import pi, sin, cos, sqrt, atan2, degrees
 from PyQt5.QtCore import pyqtSignal, QMutexLocker, QMutex, QThread
 
 def subthreadNotDefined():
@@ -30,9 +30,12 @@ class SubThread(QThread):
                         'oni_cutting': ['Frequency (Hz)','Magnitude (mT)','angleBound1 (deg)','angleBound2 (deg)','N/A'],
                         'examplePiecewiseFunction': ['Frequency (Hz)','Magnitude (mT)','angle (deg)','period1 (0-1)','period2 (0-1)'],
                         'ellipse': ['Frequency (Hz)','Azimuthal Angle (deg)','B_horzF (mT)','B_vert (mT)','B_horzB (mT)'],
+                        'drawing': ['pattern ID','offsetX','offsetY','N/A','N/A'],
+                        'swimmerPathFollowing': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
         self.defaultValOnGui = {
                         'twistField': [0,0,0,0,0],
+                        'drawing': [0,0,0,1,0],
                         'default':[0,0,0,0,0]
                         }
         self.minOnGui = {'twistField': [-100,0,-1080,0,0],
@@ -46,6 +49,7 @@ class SubThread(QThread):
                         'oni_cutting': [-100,-14,-720,-720,0],
                         'ellipse': [-100,-720,0,0,0],
                         'examplePiecewiseFunction': [-20,0,-360,0,0],
+                        'swimmerPathFollowing': [-100,0,0,0,0],
                         'default':[0,0,0,0,0]}
         self.maxOnGui = {'twistField': [100,14,1080,180,360],
                         'rotateXY': [100,14,0,0,0],
@@ -58,6 +62,8 @@ class SubThread(QThread):
                         'oni_cutting': [100,14,720,720,0],
                         'ellipse': [100,720,20,20,20],
                         'examplePiecewiseFunction': [20,20,360,1,1],
+                        'drawing':[2,1000,1000,10,0],
+                        'swimmerPathFollowing': [100,20,0,0,0],
                         'default':[0,0,0,0,0]}
 
     def setup(self,subThreadName):
@@ -71,8 +77,6 @@ class SubThread(QThread):
     def run(self):
         subthreadFunction = getattr(self,self._subthreadName,subthreadNotDefined)
         subthreadFunction()
-        # self.stop()
-        # self.finished.emit()time rati
 
     def setParam0(self,val): self.params[0] = val
     def setParam1(self,val): self.params[1] = val
@@ -83,6 +87,88 @@ class SubThread(QThread):
     #=========================================
     # Start defining your subthread from here
     #=========================================
+    def drawing(self):
+        """
+        An example of drawing lines and circles in a subThread
+        (Not in object detection)
+        """
+        #=============================
+        # reference params
+        # 0 'Path ID'
+        # 1 'offsetX'
+        # 2 'offsetY'
+        # 3 'scale'
+        #=============================
+        startTime = time.time()
+        while True:
+            self.vision.clearDrawingRouting() # if we don't run this in a while loop, it freezes!!! (because *addDrawing* keeps adding new commands)
+            self.vision.addDrawing('pathUT', self.params)
+            self.vision.addDrawing('circle',[420,330,55])
+            self.vision.addDrawing('arrow',[0,0,325,325])
+            # you can also do somthing like:
+            # drawing an arrow from "the robot" to "the destination point"
+            t = time.time() - startTime # elapsed time (sec)
+            self.field.setX(0)
+            self.field.setY(0)
+            self.field.setZ(0)
+            if self.stopped:
+                return
+
+    def swimmerPathFollowing(self):
+        '''
+        An example of autonomous path following of a sinusoidal swimmer at air-water interfaceself.
+        This example demonstrates the use of:
+        1 - a subthread that comprises several tasks
+        2 - drawing the path, target, etc. on the screen
+        3 - changeing the drawings based on the current state
+        '''
+        #=============================
+        # reference params
+        # 0 'Frequency (Hz)'
+        # 1 'Magnitude (mT)'
+        #=============================
+        startTime = time.time()
+        state = 0 # indicates which goal point the robot is approaching. e.g. state0 -> approaching goalsX[0], goalsY[0]
+        rect = [640,480] # size of the image. Format: width, height.
+        pointsX = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.2] # normalized position [0,1]
+        pointsY = [0.8,0.2,0.2,0.8,0.2,0.2,0.8,0.8] # normalized position [0,1]
+        goalsX = [int(rect[0]* i) for i in pointsX] # actual position (pixel)
+        goalsY = [int(rect[1]* i) for i in pointsY] # actual position (pixel)
+        tolerance = 10 # It is considered that the robot has reached the point once the distance is less than *tolerance*
+        while True:
+            # obtain positions
+            x = self.vision.agent1.x
+            y = self.vision.agent1.y
+            goalX = goalsX[state] # must be int
+            goalY = goalsY[state] # must be int
+
+            # draw reference lines
+            self.vision.clearDrawingRouting() # if we don't run this in a while loop, it freezes!!! (because *addDrawing* keeps adding new commands)
+            self.vision.addDrawing('closedPath',[goalsX,goalsY])
+            self.vision.addDrawing('circle',[goalX,goalY,5])
+            self.vision.addDrawing('line',[x,y,goalX,goalY])
+
+            # calculate distance and angle
+            distance = sqrt((goalX - x)**2 + (goalY - y)**2)
+            angle = degrees(atan2(-(goalY-y),goalX-x))   # computers take top left point as (0,0)
+
+            # check if it has reached the goal point
+            if distance <= tolerance:
+                state += 1
+                print('>>> Step to state {} <<<'.format(state))
+
+            # apply magnetic field
+            t = time.time() - startTime # elapsed time (sec)
+            theta = 2 * pi * self.params[0] * t
+            fieldX = self.params[1] * cos(theta) * cosd(angle)
+            fieldY = self.params[1] * cos(theta) * sind(angle)
+            fieldZ = self.params[1] * sin(theta)
+            self.field.setX(fieldX)
+            self.field.setY(fieldY)
+            self.field.setZ(fieldZ)
+            if self.stopped or state == len(pointsX):
+                return
+
     def examplePiecewiseFunction(self):
         """
         This function shows an example of a poscX_sawiecewise function.

@@ -16,8 +16,8 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 # Creating instances of fieldManager and Camera
 #=========================================================
 field = FieldManager(S826())
-vision = Vision(index=1,type='firewire',guid=2672909588927744,buffersize=10) # greyscale mode
-# vision2 = Vision(index=2,type='firewire',guid=2672909587849792  ,buffersize=4)
+vision = Vision(index=1,type='firewire',guid=2672909588927744,buffersize=12) # greyscale mode
+vision2 = Vision(index=2,type='firewire',guid=2672909587849792  ,buffersize=12)
 # to use usb camera, try    vision = Vision(index=1,type='usb')
 # to use 1 camera only, comment out this line:    vision2 = ...
 #=========================================================
@@ -41,13 +41,13 @@ class GUI(QMainWindow,Ui_MainWindow):
     def closeEvent(self,event):
         self.thrd.stop()
         self.timer.stop()
-        vision.cam.stop_video()
+        vision.closeCamera()
         try:
             vision2
         except NameError:
             pass
         else:
-            vision2.cam.stop_video()
+            vision2.closeCamera()
         self.clearField()
         event.accept()
 
@@ -139,6 +139,8 @@ class GUI(QMainWindow,Ui_MainWindow):
     @pyqtSlot()
     def finishSubThreadProcess(self):
         print('Subthread is terminated.')
+
+        vision.clearDrawingRouting()
         self.clearField()
         # disable some buttons etc.
 

@@ -3,15 +3,29 @@ import cv2
 #=============================================================================================
 # Call this function if selected filterName is not defined
 #=============================================================================================
-def filterNotDefined(inputImage,args):
+def filterNotDefined(inputImage,args=None):
     print('Filter name not defined in filterlib.py')
     return inputImage
 
 #========================================
 # Usage: grey()
+# convert to grey image
 #========================================
-def grey(inputImage,args):
-    return cv2.cvtColor(inputImage, cv2.COLOR_BGR2GRAY)
+def grey(inputImage,args=None):
+    if len(inputImage.shape) == 3:
+        return cv2.cvtColor(inputImage, cv2.COLOR_BGR2GRAY)
+    else:
+        return inputImage
+
+#========================================
+# Usage: color()
+# convert to color image
+#========================================
+def color(inputImage,args=None):
+    if len(inputImage.shape) == 2:
+        return cv2.cvtColor(inputImage, cv2.COLOR_GRAY2BGR)
+    else:
+        return inputImage
 
 #========================================
 # Usage: blur(radius)

@@ -23,7 +23,7 @@ def detectBiggestContour(imageFiltered,imageOriginal,agent):
         center = np.int0(np.sum(box, axis=0)/4) # [centerX, centerY] dataType: int
         agent.set(center[0],center[1],rect[2]) # update the position of the agnet
         cv2.drawContours(imageOriginal,[box],0,(0,255,0), 3) # draw boundingRect on the original image
-        print(rect[2])
+        # print(rect[2])
     return imageOriginal
 
 #====================================================
