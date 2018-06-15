@@ -1,6 +1,7 @@
 import cv2, sys, re, time
 from pydc1394 import Camera
 import filterlib
+import drawing
 import objectDetection
 from objectDetection import Agent
 
@@ -22,7 +23,10 @@ class Vision(object):
         self._isFilterBypassed = True
         self._isObjectDetectionRunning = False
         self._detectionAlgorithm = ''
-        self.filterRouting = [] # data structure: {"filterName", "args"}, defined in the editor
+        self.drawingRouting = []
+        # data structure: {"drawingName", "args"}, defined in Subthread
+        self.filterRouting = []
+        # data structure: {"filterName", "args"}, defined in the editor
         # define the agents that you want to detect with objectDetection algorithm
         self.agent1 = Agent()
         self.agent2 = Agent()
@@ -63,6 +67,8 @@ class Vision(object):
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
+                if self.needsDrawing():
+                    frameProcessed = self.processDrawings(frameProcessed)
                 cv2.imshow(self.windowName(),frameProcessed)
                 frameOriginal.enqueue()
         else:
@@ -76,8 +82,15 @@ class Vision(object):
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
+                if self.needsDrawing():
+                    frameProcessed = self.processDrawings(frameProcessed)
                 cv2.imshow(self.windowName(),frameProcessed)
 
+    def closeCamera(self):
+        if self.isFireWire():
+            self.cam.stop_video()
+        else:
+            self.cap.release()
     #==============================================================================================
     # obtain instance attributes
     #==============================================================================================
@@ -96,6 +109,9 @@ class Vision(object):
     def isObjectDetectionRunning(self):
         return self._isObjectDetectionRunning
 
+    def needsDrawing(self):
+        return not self.drawingRouting == []
+
     #==============================================================================================
     # set instance attributes
     #==============================================================================================
@@ -108,6 +124,9 @@ class Vision(object):
     def setStateObjectDetection(self,state,algorithm):
         self._isObjectDetectionRunning = state
         self._detectionAlgorithm = algorithm
+
+    def setDrawing(self,contents):
+        self.subthreadDrawing = contents
 
     #==============================================================================================
     # <Filters>
@@ -140,7 +159,7 @@ class Vision(object):
     #==============================================================================================
     def processObjectDetection(self,imageFiltered,imageOriginal):
         # convert to rgb so that coloured lines can be drawn on top
-        imageOriginal = cv2.cvtColor(imageOriginal, cv2.COLOR_GRAY2RGB)
+        imageOriginal = filterlib.color(imageOriginal)
 
         # object detection algorithm starts here
         # In this function, information about the agent will be updated, and the original image with
@@ -148,3 +167,21 @@ class Vision(object):
         algorithm = getattr(objectDetection,self._detectionAlgorithm,objectDetection.algorithmNotDefined)
         imageProcessed = algorithm(imageFiltered,imageOriginal,self.agent1) # pass instances of Agent class if you want to update its info
         return imageProcessed
+
+    #==============================================================================================
+    # <subthread drawing>
+    # Used to draw lines etc. on a plot
+    # For showing the path that the robot wants to follow
+    #==============================================================================================
+    def clearDrawingRouting(self):
+        self.drawingRouting = []
+
+    def addDrawing(self,name,args=None):
+        self.drawingRouting.append({'drawingName': name, 'args': args})
+
+    def processDrawings(self,image):
+        # convert to rgb so that coloured lines can be drawn on top
+        image = filterlib.color(image)
+        for item in self.drawingRouting:
+            image = getattr(drawing,item['drawingName'],drawing.drawingNotDefined)(image,item['args'])
+        return image
