@@ -465,6 +465,11 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <property name="text">
+       <string>swimmerBenchmark</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>drawing</string>
       </property>
      </item>

@@ -1,3 +1,15 @@
+"""
+=============================================================================
+vision.py
+----------------------------------------------------------------------------
+Version
+1.0.0 2018/06/16 Added video writing feature.
+0.0.1 2018/02/05 Initial commit
+----------------------------------------------------------------------------
+[GitHub] : https://github.com/atelier-ritz
+=============================================================================
+"""
+
 import cv2, sys, re, time
 from pydc1394 import Camera
 import filterlib
@@ -21,26 +33,30 @@ class Vision(object):
         self._guid = guid
         self._isUpdating = True
         self._isFilterBypassed = True
-        self._isObjectDetectionRunning = False
+        self._isObjectDetectionEnabled = False
         self._detectionAlgorithm = ''
-        self.drawingRouting = []
-        # data structure: {"drawingName", "args"}, defined in Subthread
-        self.filterRouting = []
-        # data structure: {"filterName", "args"}, defined in the editor
-        # define the agents that you want to detect with objectDetection algorithm
+        self.filterRouting = [] # data structure: {"filterName", "args"}, defined in the GUI text editor
+
+        # instances of Agent class. You can define an array if you have multiple agents.
+        # Pass them to *processObjectDetection()*
         self.agent1 = Agent()
         self.agent2 = Agent()
+
+        # drawings
+        self.drawingRouting = [] # data structure: {"drawingName", "args"}, defined in Subthread
+
+        # video writing
+        self._isVideoWritingEnabled = False
+        self.videoWriter =  None
 
         if self.isFireWire():
             self.cam = Camera(guid=self._guid)
             print("====================================================")
             print("CameraId:", self._id)
-            print("Vendor:", self.cam.vendor)
             print("Model:", self.cam.model)
             print("GUID:", self.cam.guid)
             print("Mode:", self.cam.mode)
             print("Framerate: ", self.cam.rate)
-            print("Available modes", [mode.name for mode in self.cam.modes])
             print("====================================================")
             self.cam.start_capture(bufsize=buffersize)
             self.cam.start_video()
@@ -63,13 +79,15 @@ class Vision(object):
                     frameFiltered = self.processFilters(frameOriginal.copy())
                 else:
                     frameFiltered = frameOriginal
-                if self.isObjectDetectionRunning():
+                if self.isObjectDetectionEnabled():
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
-                if self.needsDrawing():
+                if self.isDrawingEnabled():
                     frameProcessed = self.processDrawings(frameProcessed)
                 cv2.imshow(self.windowName(),frameProcessed)
+                if self.isVideoWritingEnabled():
+                    self.videoWriter.write(frameOriginal)
                 frameOriginal.enqueue()
         else:
             if self.isUpdating():
@@ -78,12 +96,14 @@ class Vision(object):
                     frameFiltered = self.processFilters(frameOriginal.copy())
                 else:
                     frameFiltered = frameOriginal
-                if self.isObjectDetectionRunning():
+                if self.isObjectDetectionEnabled():
                     frameProcessed = self.processObjectDetection(frameFiltered,frameOriginal)
                 else:
                     frameProcessed = frameFiltered
-                if self.needsDrawing():
+                if self.isDrawingEnabled():
                     frameProcessed = self.processDrawings(frameProcessed)
+                if self.isVideoWritingEnabled():
+                    self.videoWriter.write(frameOriginal)
                 cv2.imshow(self.windowName(),frameProcessed)
 
     def closeCamera(self):
@@ -91,6 +111,8 @@ class Vision(object):
             self.cam.stop_video()
         else:
             self.cap.release()
+        if not self.videoWriter == None:
+            self.videoWriter.release()
     #==============================================================================================
     # obtain instance attributes
     #==============================================================================================
@@ -106,11 +128,14 @@ class Vision(object):
     def isFilterBypassed(self):
         return self._isFilterBypassed
 
-    def isObjectDetectionRunning(self):
-        return self._isObjectDetectionRunning
+    def isObjectDetectionEnabled(self):
+        return self._isObjectDetectionEnabled
 
-    def needsDrawing(self):
+    def isDrawingEnabled(self):
         return not self.drawingRouting == []
+
+    def isVideoWritingEnabled(self):
+        return self._isVideoWritingEnabled
 
     #==============================================================================================
     # set instance attributes
@@ -122,11 +147,14 @@ class Vision(object):
         self._isFilterBypassed = state
 
     def setStateObjectDetection(self,state,algorithm):
-        self._isObjectDetectionRunning = state
+        self._isObjectDetectionEnabled = state
         self._detectionAlgorithm = algorithm
 
-    def setDrawing(self,contents):
-        self.subthreadDrawing = contents
+    def setVideoWritingEnabled(self,state):
+        self._isVideoWritingEnabled = state
+
+    def createVideoWriter(self,fileName):
+        self.videoWriter = cv2.VideoWriter(fileName,fourcc=cv2.VideoWriter_fourcc(*'XVID'),fps=30.0,frameSize=(640,480),isColor=False)
 
     #==============================================================================================
     # <Filters>

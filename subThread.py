@@ -31,11 +31,12 @@ class SubThread(QThread):
                         'examplePiecewiseFunction': ['Frequency (Hz)','Magnitude (mT)','angle (deg)','period1 (0-1)','period2 (0-1)'],
                         'ellipse': ['Frequency (Hz)','Azimuthal Angle (deg)','B_horzF (mT)','B_vert (mT)','B_horzB (mT)'],
                         'drawing': ['pattern ID','offsetX','offsetY','N/A','N/A'],
-                        'swimmerPathFollowing': ['Frequency (Hz)','Magniude (mT)','N/A','N/A','N/A'],
+                        'swimmerPathFollowing': ['Frequency (Hz)','Magniude (mT)','temp angle','N/A','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
         self.defaultValOnGui = {
                         'twistField': [0,0,0,0,0],
                         'drawing': [0,0,0,1,0],
+                        'swimmerPathFollowing': [-20,2,0,0,0],
                         'default':[0,0,0,0,0]
                         }
         self.minOnGui = {'twistField': [-100,0,-1080,0,0],
@@ -63,7 +64,7 @@ class SubThread(QThread):
                         'ellipse': [100,720,20,20,20],
                         'examplePiecewiseFunction': [20,20,360,1,1],
                         'drawing':[2,1000,1000,10,0],
-                        'swimmerPathFollowing': [100,20,0,0,0],
+                        'swimmerPathFollowing': [100,20,360,0,0],
                         'default':[0,0,0,0,0]}
 
     def setup(self,subThreadName):
@@ -100,6 +101,9 @@ class SubThread(QThread):
         # 3 'scale'
         #=============================
         startTime = time.time()
+        # video writing feature
+        self.vision.createVideoWriter('drawpath.avi')
+        self.vision.setVideoWritingEnabled(True)
         while True:
             self.vision.clearDrawingRouting() # if we don't run this in a while loop, it freezes!!! (because *addDrawing* keeps adding new commands)
             self.vision.addDrawing('pathUT', self.params)
@@ -112,29 +116,108 @@ class SubThread(QThread):
             self.field.setY(0)
             self.field.setZ(0)
             if self.stopped:
+                self.vision.setVideoWritingEnabled(False)
                 return
 
     def swimmerPathFollowing(self):
         '''
         An example of autonomous path following of a sinusoidal swimmer at air-water interfaceself.
-        This example demonstrates the use of:
-        1 - a subthread that comprises several tasks
-        2 - drawing the path, target, etc. on the screen
-        3 - changeing the drawings based on the current state
+        This example follows the path "M".
         '''
         #=============================
         # reference params
         # 0 'Frequency (Hz)'
         # 1 'Magnitude (mT)'
+        # 3 'temp angle'
         #=============================
         startTime = time.time()
         state = 0 # indicates which goal point the robot is approaching. e.g. state0 -> approaching goalsX[0], goalsY[0]
         rect = [640,480] # size of the image. Format: width, height.
-        pointsX = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.2] # normalized position [0,1]
-        pointsY = [0.8,0.2,0.2,0.8,0.2,0.2,0.8,0.8] # normalized position [0,1]
+        pointsX = [0.2,0.3,0.4,0.5,0.6,0.7,0.8] # normalized position [0,1]
+        pointsY = [0.7,0.3,0.3,0.7,0.3,0.3,0.7] # normalized position [0,1]
+        goalsX = [int(rect[0]* i) for i in pointsX] # actual position (pixel)
+        goalsY = [int(rect[1]* i) for i in pointsY] # actual position (pixel)
+        tolerance = 10
+        # It is considered that the robot has reached the point once the distance is less than *tolerance*
+        toleranceDeviation = 30
+        # Path correction is necessary when deviation exceeds this value.
+        magnitudeCorrection = 1
+        # Slow down the speed of the robot t oavoid overshoot when it is close to goal points
+        while True:
+            # obtain positions
+            x = self.vision.agent1.x # curent position of the robot
+            y = self.vision.agent1.y
+            goalX = goalsX[state] # must be int
+            goalY = goalsY[state] # must be int
+            goalXPrevious = goalsX[state-1] # must be int
+            goalYPrevious = goalsY[state-1] # must be int
+
+            # draw reference lines
+            self.vision.clearDrawingRouting() # if we don't run this in a while loop, it freezes!!! (because *addDrawing* keeps adding new commands)
+            self.vision.addDrawing('closedPath',[goalsX,goalsY])
+            self.vision.addDrawing('circle',[goalX,goalY,5])
+            self.vision.addDrawing('line',[x,y,goalX,goalY])
+
+            #=======================================================
+            # calculate the heading angle
+            #=======================================================
+            distance = distanceBetweenPoints(x,y,goalX,goalY)
+            footX, footY = perpendicularFootToLine(x,y,goalXPrevious,goalYPrevious,goalX,goalY)
+            deviation = distanceBetweenPoints(x,y,footX,footY)
+            if deviation > toleranceDeviation:
+                # moving perpendicular to the line
+                angle = degrees(atan2(-(footY-y),footX-x))
+            else:
+                angleRobotToGoal = atan2(-(goalY-y),goalX-x)
+                angleRobotToFoot = atan2(-(footY-y),footX-x)
+                angleCorrectionOffset = normalizeAngle(angleRobotToFoot - angleRobotToGoal) * deviation / toleranceDeviation
+                angle = degrees(angleRobotToGoal + angleCorrectionOffset)
+                # print(angleRobotToGoal,angle)
+
+            if distance <= tolerance * 3:
+                magnitudeCorrection = 0.5
+            else:
+                magnitudeCorrection = 1
+            # check if it has reached the goal point
+            if distance <= tolerance:
+                state += 1
+                print('>>> Step to point {} <<<'.format(state))
+
+
+            # apply magnetic field
+            t = time.time() - startTime # elapsed time (sec)
+            theta = 2 * pi * self.params[0] * t
+            fieldX = magnitudeCorrection * self.params[1] * cos(theta) * cosd(angle+self.params[2])
+            fieldY = magnitudeCorrection * self.params[1] * cos(theta) * sind(angle+self.params[2])
+            fieldZ = magnitudeCorrection * self.params[1] * sin(theta)
+            self.field.setX(fieldX)
+            self.field.setY(fieldY)
+            self.field.setZ(fieldZ)
+            if self.stopped or state == len(pointsX):
+                return
+
+    def swimmerBenchmark(self):
+        '''
+        An example of testing the velocity of the swimmer with respect to frequency and magnitude.
+        It demonstrates:
+            - path following: Point0 -> Point1 -> Point0
+            - do the same path following task for different frequencies. (Benchmarking *velocity* vs *frequency*)
+            - draw lines and circles on the frame in real time
+
+        '''
+        startTime = time.time()
+        state = 0 # indicates which goal point the robot is approaching. e.g. state0 -> approaching goalsX[0], goalsY[0]
+        freq = [-15,-15,-17.5,-20,-22.5,-25,-27.5,-30] # the first frequency is the freq that the robot is heading to the start point.
+        magnitude = 3
+        benchmarkState = 0 # indicates which frequency the program is testing
+
+        rect = [640,480] # size of the image. Format: width, height.
+        pointsX = [0.2,0.8] # normalized position [0,1]
+        pointsY = [0.2,0.8] # normalized position [0,1]
         goalsX = [int(rect[0]* i) for i in pointsX] # actual position (pixel)
         goalsY = [int(rect[1]* i) for i in pointsY] # actual position (pixel)
         tolerance = 10 # It is considered that the robot has reached the point once the distance is less than *tolerance*
+        print('Moving to the home position. Frequency {} Hz'.format(freq[benchmarkState]))
         while True:
             # obtain positions
             x = self.vision.agent1.x
@@ -152,26 +235,40 @@ class SubThread(QThread):
             distance = sqrt((goalX - x)**2 + (goalY - y)**2)
             angle = degrees(atan2(-(goalY-y),goalX-x))   # computers take top left point as (0,0)
 
+
             # check if it has reached the goal point
             if distance <= tolerance:
-                state += 1
-                print('>>> Step to state {} <<<'.format(state))
+                # if at the starting point, start a new round of benchmark test
+                if state == 0:
+                    benchmarkState += 1
+                    if benchmarkState < len(freq):
+                        print('Case {} - Benchmark Frequency {} Hz'.format(benchmarkState,freq[benchmarkState]))
+                state += 1  # move to the next target point
+                # if the path is finished, set the home position as the next goal point
+                if state == len(pointsX):
+                    state = 0
+                # if the benchmark is finished, sdo not display the next point
+                if benchmarkState < len(freq):
+                    print('    >>> Step to point {} <<<'.format(state))
 
             # apply magnetic field
             t = time.time() - startTime # elapsed time (sec)
-            theta = 2 * pi * self.params[0] * t
-            fieldX = self.params[1] * cos(theta) * cosd(angle)
-            fieldY = self.params[1] * cos(theta) * sind(angle)
-            fieldZ = self.params[1] * sin(theta)
+            theta = 2 * pi * freq[benchmarkState] * t
+            fieldX = magnitude * cos(theta) * cosd(angle+60)
+            fieldY = magnitude * cos(theta) * sind(angle+60)
+            fieldZ = magnitude * sin(theta)
             self.field.setX(fieldX)
             self.field.setY(fieldY)
             self.field.setZ(fieldZ)
-            if self.stopped or state == len(pointsX):
+            if self.stopped or benchmarkState == len(freq):
                 return
 
     def examplePiecewiseFunction(self):
         """
-        This function shows an example of a poscX_sawiecewise function.
+        This function shows an example of a piecewise function.
+        It first convert time into normalizedTime (range [0,1)).
+        Values are selected based on *normT*.
+        This makes it easier to change frequency without modifying the shape of the funciton.
         """
         #=============================
         # reference params
