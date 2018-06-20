@@ -45,9 +45,11 @@ New(Apr 6, 2018): Updated "autoInstall.sh" that helps install all packages autom
 ```
 1. Download "autoInstall.sh" to your local folder.
 
-2. Download "s826 linux driver" (http://www.sensoray.com/PCI_Express_digital_output_826.htm) and "pydc139" (https://github.com/jordens/pydc1394). Name the extracted folders as "s826" and "pydc1394". Put them in the same directory as "autoInstall.sh".
+2. Download "s826 linux driver" (http://www.sensoray.com/PCI_Express_digital_output_826.htm) and "pydc139" (https://github.com/jordens/pydc1394). 
 
-3. Open terminal in the current directory and run command "sudo ./autoInstall.sh".
+3. Name the extracted folders as "s826" and "pydc1394". Put them in the same directory as "autoInstall.sh".
+
+4. Open terminal in the current directory and run command "sudo bash ./autoInstall.sh".
 ```
 
 This bash file installs all the following dependencies:
