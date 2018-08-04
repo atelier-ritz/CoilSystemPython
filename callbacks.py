@@ -23,8 +23,8 @@ vision = Vision(index=1,type='firewire',guid=2672909588927744,buffersize=12) # g
 #=========================================================
 # Creating instances of PS3 controller
 #=========================================================
-from PS3Controller import DualShock
-joystick = DualShock()
+# from PS3Controller import DualShock
+# joystick = DualShock()
 # to disable controller comment out these 2 lines
 #=========================================================
 # a class that handles the signal and callbacks of the GUI
