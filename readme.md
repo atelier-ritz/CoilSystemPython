@@ -280,7 +280,7 @@ self.vision.stopRecording()
 
 Please refer to the *drawing()* in subThread.py.
 
-## Knwon Issues
+## Known Issues
 
 1. The program always crashes on the first time after system startup.
 
