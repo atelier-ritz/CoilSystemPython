@@ -32,6 +32,9 @@ Contents
     2. [Signal Generator - Mar 22, 2018](#signal-generator)
     3. [Field Preview Window - Mar 24, 2018](#preview-window)
     4. [Drawing feature - Jun 14, 2018](#drawing)
+    5. [Video recording and snapshot feature - Aug 4, 2018](#recording)
+
+5. [Known Issues](#known-issues)
 
 <!-- /TOC -->
 
@@ -217,21 +220,26 @@ with-Joystick: basic modules + joystick support
 
 ### Joystick
 
-In the "With-Joystick" branch of this repository, we added a new module that enables the control of the magnetic field with a joystick controller. 
+pygame needs to be installed to use the joystick module. To enable it, uncomment the following lines in callbacks.py.
 
-Although We only tested a PS3 Dualshock controller connected via USB, you should be able to work with any controller. (Try using "lsusb" command and "dmesg" command in the terminal to see if the controller is detected.) 
-
-The available input for a PS3 controllers are 6 axis input (ranges from -1 to +1. L/R joyStick and L2/R2 buttons) and 16 on/off inputs (L1 R1 Start Select Square Circle Triangle Cross) Some changes are made to the code as follows:
 ```
-Callbacks.py 
-     * Added an instance of "DualShock" class
-     * This instance is passed to the subthread module
-     * In "update()" the input from the controller is updated. This means the input is updated at 60 Hz.
-Subthread.py
-     * In a subthread, the input can be obtained via functions defined in "PS3Controller.py". See the comments in the file.
+from PS3Controller import DualShock
+joystick = DualShock()
 ```
 
-## signal-generator
+Although we only tested a PS3 Dualshock controller connected via USB, you should be able to work with any controller. (Try using "lsusb" command and "dmesg" command in the terminal to see if the controller is detected.) 
+
+The available input for a PS3 controllers are 6 axis input and 16 button inputs.
+
+Run the follwing command in the directory to test the controller input.
+
+```
+python3 PS3Controller.py
+```
+
+Refer to the sample code in *tianqiGripper()* in subThread.py.
+
+### signal-generator
 
 Added oscBetween() function that can be used in "subthread.py".
 
@@ -241,7 +249,7 @@ The following oscillation waveforms are available: sin, saw, square, triangle.
 
 Please refer to "exampleOscBetween" in "subthread.py" and the "oscBetween()" function defined in "mathfx.py".
 
-## Preview Window
+### Preview Window
 
 Added a window for real time preview of magnetic fields.
 
@@ -249,7 +257,7 @@ Also added some examples in subthread.py.
 
 ![Preview Window](https://github.com/atelier-ritz/CoilSystemPython/blob/master/documentation/previewwindow.gif)
 
-## Drawing
+### Drawing
 
 In the old version, users can apply filters to the image, or highlight the object detected.
 
@@ -259,4 +267,23 @@ This is necessary when, for example, users want to draw a vector pointing from t
 
 Please refer to the "swimmerPathFollowing" example and "drawing" example in subThread.py.
 
+### Recording
 
+To take a snapshot, click the snapshot button in the GUI.
+
+To record a video in a subThread, use the following commands):
+
+```
+self.vision.startRecording('YOUR_FILE_NAME.avi')
+self.vision.stopRecording()
+```
+
+Please refer to the *drawing()* in subThread.py.
+
+## Knwon Issues
+
+1. The program always crashes on the first time after system startup.
+
+2. If a game controller is used, segmentation fault occurs when exiting the program. 
+
+3. Segmentation fault occurs when the user tries to record the videos of multiple cameras simultaneously. (When *self.vision.stopRecording()* is executed)
