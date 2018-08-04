@@ -3,6 +3,7 @@
 vision.py
 ----------------------------------------------------------------------------
 Version
+1.1.0 2018/08/04 Added snapshot feature.
 1.0.0 2018/06/16 Added video writing feature.
 0.0.1 2018/02/05 Initial commit
 ----------------------------------------------------------------------------
@@ -34,6 +35,7 @@ class Vision(object):
         self._isUpdating = True
         self._isFilterBypassed = True
         self._isObjectDetectionEnabled = False
+        self._isSnapshotEnabled = False
         self._detectionAlgorithm = ''
         self.filterRouting = [] # data structure: {"filterName", "args"}, defined in the GUI text editor
 
@@ -85,9 +87,12 @@ class Vision(object):
                     frameProcessed = frameFiltered
                 if self.isDrawingEnabled():
                     frameProcessed = self.processDrawings(frameProcessed)
-                cv2.imshow(self.windowName(),frameProcessed)
+                if self.isSnapshotEnabled():
+                    cv2.imwrite('snapshot.png',filterlib.color(frameProcessed))
+                    self.setStateSnapshotEnabled(False)
                 if self.isVideoWritingEnabled():
-                    self.videoWriter.write(frameOriginal)
+                    self.videoWriter.write(filterlib.color(frameProcessed))
+                cv2.imshow(self.windowName(),frameProcessed)
                 frameOriginal.enqueue()
         else:
             if self.isUpdating():
@@ -102,8 +107,11 @@ class Vision(object):
                     frameProcessed = frameFiltered
                 if self.isDrawingEnabled():
                     frameProcessed = self.processDrawings(frameProcessed)
+                if self.isSnapshotEnabled():
+                    cv2.imwrite('snapshot.png',filterlib.color(frameProcessed))
+                    self.setStateSnapshotEnabled(False)
                 if self.isVideoWritingEnabled():
-                    self.videoWriter.write(frameOriginal)
+                    self.videoWriter.write(filterlib.color(frameProcessed))
                 cv2.imshow(self.windowName(),frameProcessed)
 
     def closeCamera(self):
@@ -113,6 +121,9 @@ class Vision(object):
             self.cap.release()
         if not self.videoWriter == None:
             self.videoWriter.release()
+            self.videoWriter = None
+        cv2.destroyWindow(self.windowName())
+
     #==============================================================================================
     # obtain instance attributes
     #==============================================================================================
@@ -134,6 +145,9 @@ class Vision(object):
     def isDrawingEnabled(self):
         return not self.drawingRouting == []
 
+    def isSnapshotEnabled(self):
+        return self._isSnapshotEnabled
+
     def isVideoWritingEnabled(self):
         return self._isVideoWritingEnabled
 
@@ -153,8 +167,24 @@ class Vision(object):
     def setVideoWritingEnabled(self,state):
         self._isVideoWritingEnabled = state
 
+    def setStateSnapshotEnabled(self,state):
+        self._isSnapshotEnabled = state
+
+    #==============================================================================================
+    # Video recording
+    #==============================================================================================
     def createVideoWriter(self,fileName):
-        self.videoWriter = cv2.VideoWriter(fileName,fourcc=cv2.VideoWriter_fourcc(*'XVID'),fps=30.0,frameSize=(640,480),isColor=False)
+        self.videoWriter = cv2.VideoWriter(fileName,fourcc=cv2.VideoWriter_fourcc(*'XVID'),fps=30.0,frameSize=(640,480),isColor=True)
+
+    def startRecording(self,fileName):
+        self.createVideoWriter(fileName)
+        self.setVideoWritingEnabled(True)
+        print('Start recording' + fileName)
+
+    def stopRecording(self):
+        self.setStateSnapshotEnabled(False)
+        self.videoWriter.release()
+        print('Stop recording.')
 
     #==============================================================================================
     # <Filters>

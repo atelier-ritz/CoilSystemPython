@@ -1,3 +1,14 @@
+"""
+=============================================================================
+subThread.py
+----------------------------------------------------------------------------
+Tips
+If you are using Atom, use Ctrl+Alt+[ to fold all the funcitons.
+Make your life easier.
+----------------------------------------------------------------------------
+[GitHub] : https://github.com/atelier-ritz
+=============================================================================
+"""
 import time
 from mathfx import *
 from math import pi, sin, cos, sqrt, atan2, degrees
@@ -10,13 +21,13 @@ def subthreadNotDefined():
 class SubThread(QThread):
     statusSignal = pyqtSignal(str)
 
-    def __init__(self,field,vision,parent=None,):
+    def __init__(self,field,vision,joystick=None,parent=None,):
         super(SubThread, self).__init__(parent)
         self.stopped = False
         self.mutex = QMutex()
         self.field = field
         self.vision = vision
-
+        self.joystick = joystick
         self._subthreadName = ''
         self.params = [0,0,0,0,0]
         self.labelOnGui = {'twistField': ['Frequency (Hz)','Magniude (mT)','AzimuthalAngle (deg)','PolarAngle (deg)','SpanAngle (deg)'],
@@ -32,11 +43,14 @@ class SubThread(QThread):
                         'ellipse': ['Frequency (Hz)','Azimuthal Angle (deg)','B_horzF (mT)','B_vert (mT)','B_horzB (mT)'],
                         'drawing': ['pattern ID','offsetX','offsetY','N/A','N/A'],
                         'swimmerPathFollowing': ['Frequency (Hz)','Magniude (mT)','temp angle','N/A','N/A'],
+                        'swimmerBenchmark': ['bias angle (deg)','N/A','N/A','N/A','N/A'],
+                        'tianqiGripper': ['N/A','Magnitude (mT)','Frequency (Hz)','Direction (deg)','N/A'],
                         'default':['param0','param1','param2','param3','param4']}
         self.defaultValOnGui = {
                         'twistField': [0,0,0,0,0],
                         'drawing': [0,0,0,1,0],
                         'swimmerPathFollowing': [-20,2,0,0,0],
+                        'tianqiGripper': [0,15,0.5,0,0],
                         'default':[0,0,0,0,0]
                         }
         self.minOnGui = {'twistField': [-100,0,-1080,0,0],
@@ -51,6 +65,7 @@ class SubThread(QThread):
                         'ellipse': [-100,-720,0,0,0],
                         'examplePiecewiseFunction': [-20,0,-360,0,0],
                         'swimmerPathFollowing': [-100,0,0,0,0],
+                        'tianqiGripper': [0,0,0,-720,0],
                         'default':[0,0,0,0,0]}
         self.maxOnGui = {'twistField': [100,14,1080,180,360],
                         'rotateXY': [100,14,0,0,0],
@@ -65,6 +80,8 @@ class SubThread(QThread):
                         'examplePiecewiseFunction': [20,20,360,1,1],
                         'drawing':[2,1000,1000,10,0],
                         'swimmerPathFollowing': [100,20,360,0,0],
+                        'swimmerBenchmark': [360,0,0,0,0],
+                        'tianqiGripper': [10,20,120,720,0],
                         'default':[0,0,0,0,0]}
 
     def setup(self,subThreadName):
@@ -102,8 +119,7 @@ class SubThread(QThread):
         #=============================
         startTime = time.time()
         # video writing feature
-        self.vision.createVideoWriter('drawpath.avi')
-        self.vision.setVideoWritingEnabled(True)
+        self.vision.startRecording('drawing.avi')
         while True:
             self.vision.clearDrawingRouting() # if we don't run this in a while loop, it freezes!!! (because *addDrawing* keeps adding new commands)
             self.vision.addDrawing('pathUT', self.params)
@@ -116,7 +132,7 @@ class SubThread(QThread):
             self.field.setY(0)
             self.field.setZ(0)
             if self.stopped:
-                self.vision.setVideoWritingEnabled(False)
+                self.vision.stopRecording()
                 return
 
     def swimmerPathFollowing(self):
@@ -130,6 +146,8 @@ class SubThread(QThread):
         # 1 'Magnitude (mT)'
         # 3 'temp angle'
         #=============================
+        # video writing feature
+        self.vision.startRecording('path.avi')
         startTime = time.time()
         state = 0 # indicates which goal point the robot is approaching. e.g. state0 -> approaching goalsX[0], goalsY[0]
         rect = [640,480] # size of the image. Format: width, height.
@@ -194,6 +212,104 @@ class SubThread(QThread):
             self.field.setY(fieldY)
             self.field.setZ(fieldZ)
             if self.stopped or state == len(pointsX):
+                self.vision.stopRecording()
+                return
+
+    def tianqiGripper(self):
+        #=============================
+        # reference params
+        # 0 'N/A'
+        # 1 'Magnitude (mT)'
+        # 2 'Frequency (Hz)'
+        #=============================
+
+        # ''' Video Recording '''
+        # self.vision.startRecording('TianqiGripper.avi')
+        ''' Init '''
+        startTime = time.time()
+        paramSgnMagZ = 1 # use R1 button to change the sign of Z magnitude
+        paramFieldScale = 1 # change the field strength with R2
+        ''' Rotating the gripper '''
+        paramRotationOffsetTime = 0 # used to avoid sudden changes while switching to rotating mode
+        paramRotationPhase = 0 # used for MODE3 - Fine rotation control
+        ''' Modes '''
+        mode = 0 # change the mode with buttons on PS3 controller
+        BUTTON_RESPONSE_TIME = 0.2 # at least 0.2 sec between button triggers
+        lastButtonPressedTimeMode = 0
+        lastButtonPressedTimeR1 = 0 # the last time that the user changing the mode
+
+        while True:
+            t = time.time() - startTime # elapsed time (sec)
+            # =======================================================
+            # Detect Button Pressed to Change the MODE
+            # =======================================================
+            if t - lastButtonPressedTimeMode > BUTTON_RESPONSE_TIME:
+                if self.joystick.isPressed('CROSS') and not mode == 0:
+                    lastButtonPressedTimeMode = t
+                    mode = 0
+                    print('[MODE] Standby')
+                elif self.joystick.isPressed('CIRCLE') and not mode == 1:
+                    lastButtonPressedTimeMode = t
+                    mode = 1
+                    print('[MODE] Grasp')
+                elif self.joystick.isPressed('TRIANGLE') and not mode == 2:
+                    lastButtonPressedTimeMode = t
+                    mode = 2
+                    print('[MODE] Transport Auto')
+                    paramRotationOffsetTime = t
+                elif self.joystick.isPressed('SQUARE') and not mode == 3:
+                    lastButtonPressedTimeMode = t
+                    mode = 3
+                    print('[MODE] Transport Manual')
+                    paramRotationPhase = pi / 2
+            # =======================================================
+            # Flip direction of Z field
+            # =======================================================
+            if t - lastButtonPressedTimeR1 > BUTTON_RESPONSE_TIME:
+                if self.joystick.isPressed('R1'):
+                    lastButtonPressedTimeR1 = t
+                    paramSgnMagZ = - paramSgnMagZ
+                    print('The sign of fieldZ is {}'.format(paramSgnMagZ))
+            # =======================================================
+            # change magnitude of field with R2
+            # =======================================================
+            rawR2 = self.joystick.getStick(5) # -1 -> 1
+            paramFieldScale = 0.5 * (- rawR2 + 1)
+            # =======================================================
+            # Process fieldXYZ in each mode
+            # =======================================================
+            if mode == 0:
+                fieldX = 0
+                fieldY = 0
+                fieldZ = 0
+            elif mode == 1:
+                polar = self.joystick.getTiltLeft()
+                azimuth = self.joystick.getAngleLeft()
+                fieldX = self.params[1] * cosd(polar) * cosd(azimuth)
+                fieldY = self.params[1] * cosd(polar) * sind(azimuth)
+                fieldZ = self.params[1] * sind(polar)
+            elif mode == 2:
+                theta = - 2 * pi * self.params[2] * (t - paramRotationOffsetTime) + pi / 2
+                fieldX = self.params[1] * cos(theta) * cosd(self.joystick.getAngleLeft())
+                fieldY = self.params[1] * cos(theta) * sind(self.joystick.getAngleLeft())
+                fieldZ = self.params[1] * sin(theta)
+            elif mode == 3:
+                if t - lastButtonPressedTimeMode > BUTTON_RESPONSE_TIME:
+                    if self.joystick.isPressed('SQUARE'):
+                        lastButtonPressedTimeMode = t
+                        if self.joystick.isPressed('L1'):
+                            paramRotationPhase = paramRotationPhase + pi/16
+                        else:
+                            paramRotationPhase = paramRotationPhase - pi/16
+                fieldX = self.params[1] * cos(paramRotationPhase) * cosd(self.joystick.getAngleLeft())
+                fieldY = self.params[1] * cos(paramRotationPhase) * sind(self.joystick.getAngleLeft())
+                fieldZ = self.params[1] * sin(paramRotationPhase)
+
+            self.field.setX(fieldX * paramFieldScale)
+            self.field.setY(fieldY * paramFieldScale)
+            self.field.setZ(fieldZ * paramFieldScale * paramSgnMagZ)
+            if self.stopped:
+                # self.vision.stopRecording()
                 return
 
     def swimmerBenchmark(self):
@@ -205,10 +321,13 @@ class SubThread(QThread):
             - draw lines and circles on the frame in real time
 
         '''
+        # video writing feature
+        self.vision.startRecording('benchmark.avi')
         startTime = time.time()
         state = 0 # indicates which goal point the robot is approaching. e.g. state0 -> approaching goalsX[0], goalsY[0]
-        freq = [-15,-15,-17.5,-20,-22.5,-25,-27.5,-30] # the first frequency is the freq that the robot is heading to the start point.
-        magnitude = 3
+        freq = [-15,-15,-17,-19,-21,-23,-25] # the first frequency is the freq that the robot is heading to the start point.
+        freq = [i - 8 for i in freq] # the first frequency is the freq that the robot is heading to the start point.
+        magnitude = 8
         benchmarkState = 0 # indicates which frequency the program is testing
 
         rect = [640,480] # size of the image. Format: width, height.
@@ -216,7 +335,7 @@ class SubThread(QThread):
         pointsY = [0.2,0.8] # normalized position [0,1]
         goalsX = [int(rect[0]* i) for i in pointsX] # actual position (pixel)
         goalsY = [int(rect[1]* i) for i in pointsY] # actual position (pixel)
-        tolerance = 10 # It is considered that the robot has reached the point once the distance is less than *tolerance*
+        tolerance = 20 # It is considered that the robot has reached the point once the distance is less than *tolerance*
         print('Moving to the home position. Frequency {} Hz'.format(freq[benchmarkState]))
         while True:
             # obtain positions
@@ -254,13 +373,14 @@ class SubThread(QThread):
             # apply magnetic field
             t = time.time() - startTime # elapsed time (sec)
             theta = 2 * pi * freq[benchmarkState] * t
-            fieldX = magnitude * cos(theta) * cosd(angle+60)
-            fieldY = magnitude * cos(theta) * sind(angle+60)
+            fieldX = magnitude * cos(theta) * cosd(angle+self.params[0])
+            fieldY = magnitude * cos(theta) * sind(angle+self.params[0])
             fieldZ = magnitude * sin(theta)
             self.field.setX(fieldX)
             self.field.setY(fieldY)
             self.field.setZ(fieldZ)
             if self.stopped or benchmarkState == len(freq):
+                self.vision.stopRecording()
                 return
 
     def examplePiecewiseFunction(self):

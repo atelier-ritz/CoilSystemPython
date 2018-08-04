@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
-    <height>456</height>
+    <width>720</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -294,19 +294,19 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>190</y>
+      <y>180</y>
       <width>341</width>
-      <height>221</height>
+      <height>251</height>
      </rect>
     </property>
     <property name="title">
-     <string>Vision</string>
+     <string>Vision (Camera ID:1)</string>
     </property>
     <widget class="QTextEdit" name="editor_vision">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>60</y>
        <width>321</width>
        <height>91</height>
       </rect>
@@ -323,7 +323,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>130</y>
+       <y>160</y>
        <width>121</width>
        <height>31</height>
       </rect>
@@ -336,9 +336,9 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>130</y>
+       <y>165</y>
        <width>146</width>
-       <height>22</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -348,27 +348,11 @@ p, li { white-space: pre-wrap; }
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QCheckBox" name="chb_startPauseCapture">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>0</y>
-       <width>171</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start/Pause Capture</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="Line" name="line">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>160</y>
+       <y>190</y>
        <width>301</width>
        <height>20</height>
       </rect>
@@ -381,7 +365,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>180</y>
+       <y>212</y>
        <width>146</width>
        <height>22</height>
       </rect>
@@ -397,7 +381,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>180</y>
+       <y>210</y>
        <width>121</width>
        <height>27</height>
       </rect>
@@ -418,6 +402,19 @@ p, li { white-space: pre-wrap; }
       </property>
      </item>
     </widget>
+    <widget class="QPushButton" name="btn_snapshot">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>30</y>
+       <width>89</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Snapshot</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
@@ -425,7 +422,7 @@ p, li { white-space: pre-wrap; }
       <x>360</x>
       <y>10</y>
       <width>351</width>
-      <height>401</height>
+      <height>421</height>
      </rect>
     </property>
     <property name="title">
@@ -466,6 +463,11 @@ p, li { white-space: pre-wrap; }
      <item>
       <property name="text">
        <string>swimmerBenchmark</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>tianqiGripper</string>
       </property>
      </item>
      <item>
@@ -664,8 +666,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>230</y>
+       <x>10</x>
+       <y>250</y>
        <width>321</width>
        <height>161</height>
       </rect>
@@ -725,7 +727,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>729</width>
+     <width>720</width>
      <height>22</height>
     </rect>
    </property>

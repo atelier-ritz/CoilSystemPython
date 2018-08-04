@@ -17,9 +17,15 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 #=========================================================
 field = FieldManager(S826())
 vision = Vision(index=1,type='firewire',guid=2672909588927744,buffersize=12) # greyscale mode
-vision2 = Vision(index=2,type='firewire',guid=2672909587849792  ,buffersize=12)
-# to use usb camera, try    vision = Vision(index=1,type='usb')
+# vision2 = Vision(index=2,type='firewire',guid=2672909587849792,buffersize=12)
+# to use usb camera, try vision = Vision(index=1,type='usb')
 # to use 1 camera only, comment out this line:    vision2 = ...
+#=========================================================
+# Creating instances of PS3 controller
+#=========================================================
+from PS3Controller import DualShock
+joystick = DualShock()
+# to disable controller comment out these 2 lines
 #=========================================================
 # a class that handles the signal and callbacks of the GUI
 #=========================================================
@@ -30,7 +36,12 @@ class GUI(QMainWindow,Ui_MainWindow):
         self.updateRate = 15 # (ms) update rate of the GUI, vision, plot
         self.setupUi(self)
         self.setupTimer()
-        self.setupSubThread(field,vision)
+        try:
+            joystick
+        except NameError:
+            self.setupSubThread(field,vision)
+        else:
+            self.setupSubThread(field,vision,joystick)
         self.setupRealTimePlot() # comment ou this line if you don't want a preview window
         self.connectSignals()
         self.linkWidgets()
@@ -48,6 +59,12 @@ class GUI(QMainWindow,Ui_MainWindow):
             pass
         else:
             vision2.closeCamera()
+        try:
+            joystick
+        except NameError:
+            pass
+        else:
+            joystick.quit()
         self.clearField()
         event.accept()
 
@@ -73,6 +90,13 @@ class GUI(QMainWindow,Ui_MainWindow):
             pass
         else:
             self.updatePlot()
+        try:
+            joystick
+        except NameError:
+            pass
+        else:
+            joystick.update()
+
 
     #=====================================================
     # Connect buttons etc. of the GUI to callback functions
@@ -89,8 +113,8 @@ class GUI(QMainWindow,Ui_MainWindow):
         # Vision Tab
         self.highlighter = syntax.Highlighter(self.editor_vision.document())
         self.chb_bypassFilters.toggled.connect(self.on_chb_bypassFilters)
-        self.chb_startPauseCapture.toggled.connect(self.on_chb_startPauseCapture)
         self.btn_refreshFilterRouting.clicked.connect(self.on_btn_refreshFilterRouting)
+        self.btn_snapshot.clicked.connect(self.on_btn_snapshot)
         # object detection
         self.chb_objectDetection.toggled.connect(self.on_chb_objectDetection)
         # Subthread Tab
@@ -124,8 +148,11 @@ class GUI(QMainWindow,Ui_MainWindow):
     #=====================================================
     # Thread Example
     #=====================================================
-    def setupSubThread(self,field,vision):
-        self.thrd = SubThread(field,vision)
+    def setupSubThread(self,field,vision,joystick=None):
+        if joystick:
+            self.thrd = SubThread(field,vision,joystick)
+        else:
+            self.thrd = SubThread(field,vision)
         self.thrd.statusSignal.connect(self.updateSubThreadStatus)
         self.thrd.finished.connect(self.finishSubThreadProcess)
 
@@ -186,11 +213,11 @@ class GUI(QMainWindow,Ui_MainWindow):
     def on_chb_bypassFilters(self,state):
         vision.setStateFiltersBypassed(state)
 
-    def on_chb_startPauseCapture(self,state):
-        vision.setStateUpdate(state)
-
     def on_btn_refreshFilterRouting(self):
         vision.createFilterRouting(self.editor_vision.toPlainText().splitlines())
+
+    def on_btn_snapshot(self):
+        vision.setStateSnapshotEnabled(True)
 
     def on_chb_objectDetection(self,state):
         algorithm = self.cbb_objectDetectionAlgorithm.currentText()
