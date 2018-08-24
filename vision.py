@@ -114,14 +114,14 @@ class Vision(object):
                     self.videoWriter.write(filterlib.color(frameProcessed))
                 cv2.imshow(self.windowName(),frameProcessed)
 
-    def closeCamera(self):
-        if self.isFireWire():
-            self.cam.stop_video()
-        else:
-            self.cap.release()
+    def closeCamera(self):()
         if not self.videoWriter == None:
             self.videoWriter.release()
             self.videoWriter = None
+        if self.isFireWire():
+            self.cam.stop_video()
+        else:
+            self.cap.release
         cv2.destroyWindow(self.windowName())
 
     #==============================================================================================
