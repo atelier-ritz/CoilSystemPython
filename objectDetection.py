@@ -13,6 +13,7 @@ def algorithmNotDefined(imageFiltered,imageOriginal,*args):
 # Detect the biggest contour (except the edge of the screen)
 #====================================================
 def detectBiggestContour(imageFiltered,imageOriginal,agent):
+    imageFiltered=cv2.copyMakeBorder(imageFiltered, top=1, bottom=1, left=1, right=1, borderType= cv2.BORDER_CONSTANT, value=[255,255,255])
     nOfSamples = 2
     im2, contours, hierarchy = cv2.findContours(imageFiltered, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cnts = sorted(contours, key = cv2.contourArea, reverse = True)[:nOfSamples]
