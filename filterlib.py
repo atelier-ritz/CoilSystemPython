@@ -52,3 +52,21 @@ def threshold(inputImage,args):
 def canny(inputImage,args):
     arg = args.split(',')
     return cv2.Canny(inputImage,int(arg[0]),int(arg[1]))
+
+#========================================
+# erode(img, kernel, iterations=1)
+# Input must be a binary image
+#========================================
+def erode(inputImage,args):
+    arg = args.split(',')
+    kernel = np.ones((int(arg[0]),int(arg[0])), np.uint8)
+    return cv2.erode(inputImage, kernel, iterations=1)
+
+#========================================
+# dilate(img, kernel, iterations=1)
+# Input must be a binary image
+#========================================
+def dilate(inputImage,args):
+    arg = args.split(',')
+    kernel = np.ones((int(arg[0]),int(arg[0])), np.uint8)
+    return cv2.dilate(inputImage, kernel, iterations=1)
