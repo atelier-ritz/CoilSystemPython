@@ -19,12 +19,14 @@ def detectBiggestContour(imageFiltered,imageOriginal,agent):
     cnts = sorted(contours, key = cv2.contourArea, reverse = True)[:nOfSamples]
     if len(cnts) > 1:
         targetCnt = cnts[1] # cnt[0] is the edge of the screen
+        # get info
+        (x,y),(MA,ma),angle = cv2.fitEllipse(targetCnt)
+        angleCorrected = -angle + 90
+        agent.set(x,y,angleCorrected) # update the position of the agnet
+        # draw contour
         rect = cv2.minAreaRect(targetCnt) # (x,y)(w,h)theta
         box = np.int0(cv2.boxPoints(rect)) # vertices of the bounding rect
-        center = np.int0(np.sum(box, axis=0)/4) # [centerX, centerY] dataType: int
-        agent.set(center[0],center[1],rect[2]) # update the position of the agnet
         cv2.drawContours(imageOriginal,[box],0,(0,255,0), 3) # draw boundingRect on the original image
-        # print(rect[2])
     return imageOriginal
 
 #====================================================
