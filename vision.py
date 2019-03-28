@@ -114,7 +114,7 @@ class Vision(object):
                     self.videoWriter.write(filterlib.color(frameProcessed))
                 cv2.imshow(self.windowName(),frameProcessed)
 
-    def closeCamera(self):()
+    def closeCamera(self):
         if not self.videoWriter == None:
             self.videoWriter.release()
             self.videoWriter = None
