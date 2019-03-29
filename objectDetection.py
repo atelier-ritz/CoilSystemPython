@@ -15,7 +15,7 @@ def algorithmNotDefined(imageFiltered,imageOriginal,*args):
 def detectBiggestContour(imageFiltered,imageOriginal,agent):
     imageFiltered=cv2.copyMakeBorder(imageFiltered, top=1, bottom=1, left=1, right=1, borderType= cv2.BORDER_CONSTANT, value=[255,255,255])
     nOfSamples = 2
-    im2, contours, hierarchy = cv2.findContours(imageFiltered, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(imageFiltered, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cnts = sorted(contours, key = cv2.contourArea, reverse = True)[:nOfSamples]
     if len(cnts) > 1:
         targetCnt = cnts[1] # cnt[0] is the edge of the screen
@@ -52,7 +52,7 @@ def drawAxis(img, start_pt, vec, colour, length):
 def primaryComponentAnalysis(imageFiltered,imageOriginal,agent):
     #   cv2.CHAIN_APPROX_NONE       save all points
     #   cv2.CHAIN_APPROX_SIMPLE     only save key points
-    img, contours, hierarchy = cv2.findContours(imageFiltered, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(imageFiltered, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
     for i in range(0, len(contours)):
         area = cv2.contourArea(contours[i])# calculate contour area
         if area < 1e2 or 1e5 < area:    # get rid of small areas (noise) and big areas (the edges of the screen)
