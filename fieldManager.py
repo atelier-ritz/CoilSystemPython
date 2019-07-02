@@ -1,10 +1,17 @@
 # assign pin # to the coil
-PIN_X1 = [0, 5.003] # pin number, factor number (mT/V)
-PIN_X2 = [3, 4.879]
-PIN_Y1 = [4, 5.143]
-PIN_Y2 = [1, 5.024]
-PIN_Z1 = [2, 5.024]
-PIN_Z2 = [5, 4.433]
+# PIN_X1 = [0, 5.003] # pin number, factor number (mT/V)
+# PIN_X2 = [3, 4.879]
+# PIN_Y1 = [4, 5.143]
+# PIN_Y2 = [1, 5.024]
+# PIN_Z1 = [2, 5.024]
+# PIN_Z2 = [5, 4.433]
+
+PIN_X1 = [5, 4.433] # pin number, factor number (mT/V)
+PIN_X2 = [1, 5.024]
+PIN_Y1 = [2, 5.224]
+PIN_Y2 = [6, 5.224]
+PIN_Z1 = [3, 4.879]
+PIN_Z2 = [7, 5.000]
 
 class FieldManager(object):
     def __init__(self,dac):
